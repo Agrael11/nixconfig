@@ -1,4 +1,10 @@
-({pkgs, ...}: {
+({pkgs, ...}: let
+  libbluray = pkgs.libbluray.override {
+    withAACS = true;
+    withBDplus = true;
+  };
+  vlc = pkgs.vlc.override { inherit libbluray; };
+in {
 	services.xserver.enable = true;
 	services.displayManager.sddm = 
 	{
@@ -14,20 +20,18 @@
 
 	imports = [
 		./sddm-astronaut-theme.nix
-		./retroarchbundle.nix
 	];
 
 	services.desktopManager.plasma6.enable = true;
 	services.xserver.xkb.layout = "sk";
 	services.xserver.xkb.variant = "";
 
-	environment.systemPackages = with pkgs; [
+	environment.systemPackages = [vlc] ++ (with pkgs; [
 		brave
 		gedit
 		gparted
 		gimp
 		libreoffice
-		vlc
 		davinci-resolve
 		discord
 		blender
@@ -45,7 +49,8 @@
 		makemkv
 		bottles
 		unityhub
-	];
+		retroarch-full
+	]);
 	
 	virtualisation.virtualbox.host.enable = true;
 	virtualisation.virtualbox.host.enableExtensionPack = true;
@@ -90,15 +95,6 @@
 		'';
 	}
 
-	];
-
-	nixpkgs.overlays = [
-		(self: super: {
-			libbluray = super.libbluray.override {
-			withAACS = true;
-			withBDplus = true;
-			};
-		})
 	];
 
 	environment.sessionVariables.NIXOS_OZONE_WL = "1";
