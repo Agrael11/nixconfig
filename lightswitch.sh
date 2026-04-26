@@ -1,1 +1,1 @@
-sudo nixos-rebuild switch
+nh os switch

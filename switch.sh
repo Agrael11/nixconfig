@@ -1,4 +1,5 @@
-sudo ./update.sh
-sudo ./lightswitch.sh
-sudo ./update.sh
-sudo nix-collect-garbage --delete-older-than 7d
+#sudo ./update.sh
+./lightswitch.sh
+nh clean all
+#sudo ./update.sh
+#sudo nix-collect-garbage --delete-older-than 7d

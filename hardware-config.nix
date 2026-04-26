@@ -10,8 +10,9 @@
 
   boot = {
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
-    initrd.kernelModules = [ "ntsync" ];
+    initrd.kernelModules = [ "ntsync" "sg" ];
     kernelModules = [ "kvm-intel" "sc0710"];
+
     extraModulePackages = [ ];
     loader.grub = {
       efiSupport = true;
@@ -43,6 +44,12 @@
   swapDevices =
     [ { device = "/dev/disk/by-uuid/2e9d52d8-5d02-43f1-b58f-27b5396ccc88"; }
     ];
+
+
+    services.udev.extraRules = ''
+      KERNEL=="sr0", GROUP="optical", MODE="0660"
+      KERNEL=="sg*", GROUP="optical", MODE="0660"
+    '';
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

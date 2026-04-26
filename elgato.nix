@@ -16,10 +16,10 @@ let
 
       nativeBuildInputs = kernel.moduleBuildDependencies;
 
-      patchPhase = ''
-        substituteInPlace lib/sc0710-video.c \
-          --replace "min_queued_buffers" "min_buffers_needed"
-      '';
+      #patchPhase = ''
+      #  substituteInPlace lib/sc0710-video.c \
+      #    --replace "min_queued_buffers" "min_buffers_needed"
+      #'';
 
       # We manually point KDIR to the Nix store kernel dev path
       buildPhase = ''

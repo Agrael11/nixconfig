@@ -10,7 +10,7 @@
 	boot.loader.grub.enable = true;
 	boot.kernelParams = [ "quiet" "nvidia-drm.fbdev=1" "simpledrm=0" "pci=realloc" "pci=assign-busses" ];
 	boot.loader.efi.canTouchEfiVariables = true;
-	boot.kernelPackages = pkgs.linuxPackages_6_6;
+	boot.kernelPackages = pkgs.linuxPackages_6_18;
 	boot.plymouth.enable = true;
 	boot.plymouth.theme = "breeze";
 	boot.loader.grub.memtest86.enable = true;
@@ -46,14 +46,12 @@
 		shell = pkgs.zsh;
 		isNormalUser = true;
 		group = "wheel";
-		extraGroups = ["video" "render"];
+		extraGroups = ["video" "render" "cdrom" "optical" "docker" "libvirtd" "kvm"];
 	};
 
 	services.openssh.enable = true;
 
 	nixpkgs.config.allowUnfree = true;
-	nixpkgs.config.checkMeta = false;
-	nixpkgs.config.doCheckByDefault = false;
 
 	environment.systemPackages = with pkgs; [
 		memtest86-efi

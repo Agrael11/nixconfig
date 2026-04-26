@@ -49,9 +49,18 @@ in {
 		makemkv
 		bottles
 		unityhub
-		retroarch-full
+		retroarch-free
+		appimage-run
+		docker-compose
+		freerdp
 	]);
 	
+
+	virtualisation.docker = {
+		enable = true;
+		enableOnBoot = true; 
+	};
+
 	virtualisation.virtualbox.host.enable = true;
 	virtualisation.virtualbox.host.enableExtensionPack = true;
 	virtualisation.virtualbox.host.addNetworkInterface = true;
@@ -97,7 +106,10 @@ in {
 
 	];
 
-	environment.sessionVariables.NIXOS_OZONE_WL = "1";
+	environment.sessionVariables = {
+		XDG_CONFIG_HOME = "$HOME/.config";
+		NIXOS_OZONE_WL = "1";
+	};
 	
 	programs.steam = {
 		enable = true;
