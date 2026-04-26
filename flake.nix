@@ -4,6 +4,7 @@
 		nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
 		grub2-themes = {
 			url = "github:vinceliuice/grub2-themes";
+			inputs.nixpkgs.follows = "nixpkgs";
 		};
 	};
 	
