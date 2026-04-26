@@ -10,7 +10,7 @@
 
   boot = {
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
-    initrd.kernelModules = [  ];
+    initrd.kernelModules = [ "ntsync" ];
     kernelModules = [ "kvm-intel" "sc0710"];
     extraModulePackages = [ ];
     loader.grub = {
