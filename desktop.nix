@@ -49,7 +49,6 @@ in {
 		makemkv
 		bottles
 		unityhub
-		retroarch-free
 		appimage-run
 		docker-compose
 		freerdp

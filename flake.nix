@@ -18,6 +18,7 @@
 					./hardware-config.nix
 					./config.nix
 					./desktop.nix
+					./retroarch-fix.nix
           			grub2-themes.nixosModules.default
 				];
 			};
