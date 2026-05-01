@@ -62,13 +62,19 @@
 
   fileSystems."/media/romdisk" = {
     device = "/dev/disk/by-uuid/FAD696A1D6965E27";
-    fsType = "ntfs";
+    fsType = "ntfs3";
     options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" ];
   };
 
   fileSystems."/media/mediadisk" = {
     device = "/dev/disk/by-uuid/4C58849358847E08";
-    fsType = "ntfs";
+    fsType = "ntfs3";
+    options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" ];
+  };
+
+  fileSystems."/media/tachi/DATA_MAIN" = {
+    device = "/dev/disk/by-uuid/4A9AFCA69AFC9025";
+    fsType = "ntfs3";
     options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" ];
   };
 
