@@ -1,1 +1,1 @@
-nh os switch
+nh os switch --update
