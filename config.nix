@@ -5,7 +5,24 @@
 		substituters = [ "https://cache.nixos.org/" ];
 		trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
 		trusted-users = [ "root" "tachi" ];
+		experimental-features = [ "nix-command" "flakes" ];
 	};
+
+	imports = [
+		./modules/10-users.nix
+		./modules/20-cli-tools.nix
+		./modules/21-desktop-tools.nix
+		./modules/22-cli-games.nix
+		./modules/23-desktop-games.nix
+		./modules/23-retroarch-fix.nix
+		./modules/24-cli-productivity.nix
+		./modules/25-desktop-productivity.nix
+		./modules/30-services.nix
+		./modules/31-samba.nix
+		./modules/32-firewall.nix
+		./modules/41-sddm-astronaut-theme.nix
+		./modules/60-overlays.nix
+	];
 
 	boot.loader.grub.enable = true;
 	boot.kernelParams = [ "intel_iommu=on" "quiet" "nvidia-drm.fbdev=1" "simpledrm=0" "pci=realloc" "pci=assign-busses" ];
@@ -44,64 +61,9 @@
 	i18n.defaultLocale = "sk_SK.UTF-8";
 	console.keyMap = "sk-qwertz";
 
-	environment.shells = [ pkgs.zsh ];
-
-	security.sudo.enable = true;
-	users.users.root = {
-		initialPassword = "Nix";
-		shell = pkgs.zsh;
-	};
-	users.users.tachi = {
-		initialPassword = "Nix";
-		shell = pkgs.zsh;
-		isNormalUser = true;
-		group = "wheel";
-		extraGroups = ["video" "render" "cdrom" "optical" "docker" "libvirtd" "kvm"];
-	};
-
 	services.openssh.enable = true;
 
-	nixpkgs.config.allowUnfree = true;
 
-	environment.systemPackages = with pkgs; [
-		pciutils
-		memtest86-efi
-		coreutils
-		hwinfo
-		mesa-demos
-		nano
-		wget
-		curl
-		sudo
-		tree
-		zip
-		unzip
-		mc
-		git
-		mono
-		wine
-		winetricks
-		speechd
-		exfatprogs
-		python312
-		v4l-utils
-		easyeffects
-		rnnoise-plugin
-		htop
-		tmux
-		openrgb
-		android-tools
-		grub2
-		msedit
-		dotnet-sdk_10
-		dotnet-runtime_10
-		gnome-disk-utility
-		ntfs3g
-		fastfetch
-		binutils
-		file
-		zstd
-	];
 
 	programs.partition-manager.enable = true;
 
@@ -126,6 +88,4 @@
 	};
 
 	documentation.enable = false;
-	
-	nix.settings.experimental-features = ["nix-command" "flakes"];
 })

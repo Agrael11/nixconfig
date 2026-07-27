@@ -27,9 +27,7 @@
 					./hardware-config-desktop.nix
 					./config.nix
 					./config-desktop.nix
-					./samba.nix
 					./desktop.nix
-					./retroarch-fix.nix
           			grub2-themes.nixosModules.default
 				];
 			};
@@ -46,9 +44,7 @@
 					./hardware-config-notebook1.nix
 					./config.nix
 					./config-notebook1.nix
-					./samba.nix
 					./desktop.nix
-					./retroarch-fix.nix
           			grub2-themes.nixosModules.default
 				];
 			};

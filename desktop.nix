@@ -1,31 +1,7 @@
 ({pkgs, pkgs-unstable, ...}: {
 
-	nixpkgs.overlays = [
-		(self: super: {
-		vlc = super.vlc.overrideAttrs (oldAttrs: {
-			buildInputs = (oldAttrs.buildInputs or []) ++ [ super.libbluray-full ];
-		});
-		})
-		# Overlay to redirect MakeMKV downloads to the Wayback Machine
-        (final: prev: {
-            makemkv = prev.makemkv.overrideAttrs (oldAttrs: {
-                srcs = [
-                    (prev.fetchurl {
-                        url = "https://web.archive.org/web/https://www.makemkv.com/download/makemkv-bin-${oldAttrs.version}.tar.gz";
-                        hash = (builtins.elemAt oldAttrs.srcs 0).outputHash or (builtins.elemAt oldAttrs.srcs 0).drvAttrs.outputHash;
-                    })
-                    (prev.fetchurl {
-                        url = "https://web.archive.org/web/https://www.makemkv.com/download/makemkv-oss-${oldAttrs.version}.tar.gz";
-                        hash = (builtins.elemAt oldAttrs.srcs 1).outputHash or (builtins.elemAt oldAttrs.srcs 1).drvAttrs.outputHash;
-                    })
-                ];
-            });
-        })
-	];
-
 	services.xserver.enable = true;
-	services.displayManager.sddm = 
-	{
+	services.displayManager.sddm = {
 		enable = true;
 		wayland.enable = true;
 		theme = "astronaut";
@@ -36,45 +12,11 @@
 		];
 	};
 
-	imports = [
-		./sddm-astronaut-theme.nix
-	];
-
 	services.desktopManager.plasma6.enable = true;
 	services.xserver.xkb.layout = "sk";
 	services.xserver.xkb.variant = "";
 
-	environment.systemPackages = (with pkgs; [
-		vlc
-		brave
-		gedit
-		gparted
-		gimp
-		libreoffice
-		davinci-resolve
-		discord
-		blender
-		lutris
-		gamemode
-		protonup-qt
-		xwayland
-		vscode
-		obs-studio
-		filezilla
-		mangohud
-		gamescope
-		kodi
-		ffmpeg
-		makemkv
-		bottles
-		unityhub
-		appimage-run
-		docker-compose
-		freerdp
-		qbittorrent
-		kdePackages.qtwebengine
-	]);
-	
+	# Packages for desktop systems are now organized in dedicated modules under modules/.
 
 	virtualisation.docker = {
 		enable = true;
