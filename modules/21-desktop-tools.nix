@@ -4,7 +4,6 @@
   environment.systemPackages = with pkgs; [
     gnome-disk-utility
     fastfetch
-    openrgbx
     docker-compose
     kdePackages.qtwebengine
     gparted
