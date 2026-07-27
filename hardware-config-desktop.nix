@@ -77,6 +77,24 @@
     fsType = "ntfs3";
     options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" ];
   };
+  
+  fileSystems."/media/tachi/DATA_SYSTEM" = {
+    device = "/dev/disk/by-uuid/B2E2249DFD92233D";
+    fsType = "ntfs3";
+    options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" ];
+  };
+
+  fileSystems."/media/tachi/DATA_NVME1" = {
+    device = "/dev/disk/by-uuid/2EFA10AAFA106FF7";
+    fsType = "ntfs3";
+    options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" ];
+  };
+
+  fileSystems."/media/tachi/DATA_NVME2" = {
+    device = "/dev/disk/by-uuid/58DC1774DC174B9E";
+    fsType = "ntfs3";
+    options = [ "uid=1000" "gid=100" "dmask=022" "fmask=133" ];
+  };
 
 
   hardware.xone.enable = true;
@@ -84,6 +102,7 @@
   boot.extraModprobeConfig = ''
     options bluetooth disable_ertm=1
   '';
+  boot.supportedFilesystems = [ "ntfs" ];
   nixpkgs.config.allowUnfree = true;
 
   hardware.enableAllFirmware = true;
@@ -94,6 +113,15 @@
 
   services.xserver.videoDrivers = [ "nvidia" ];
   
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+
+  # enable the kernel module and `sc0710-cli` script
+  hardware.sc0710.enable = true;
+
+  # enable automatic firmware updates with the systemd service
+  # hardware.sc0710.enableFirmware = true;
+
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
   hardware.nvidia.open = false;

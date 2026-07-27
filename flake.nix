@@ -1,22 +1,34 @@
 {
 	description = "My NixOS Configuration";
 	inputs = {
-		nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+		nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
+		nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    	
+		sc0710.url = "github:Nakildias/sc0710";
+		# sc0710.url = "path:./external/sc0710";
+		
 		grub2-themes = {
 			url = "github:vinceliuice/grub2-themes";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 	};
 	
-	outputs = inputs@{ self, nixpkgs, grub2-themes }: {
+	outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, sc0710, grub2-themes }: {
 		nixosConfigurations = {
 			Desktop = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
-        		specialArgs = { inherit inputs; };
+        		specialArgs = { 
+					pkgs-unstable = import nixpkgs-unstable {
+						system = "x86_64-linux";
+						config.allow-unstable = true;
+					};
+					inherit inputs; 
+				};
 				modules = [
-					./elgato.nix
-					./hardware-config.nix
+        			sc0710.nixosModules.default
+					./hardware-config-desktop.nix
 					./config.nix
+					./samba.nix
 					./desktop.nix
 					./retroarch-fix.nix
           			grub2-themes.nixosModules.default

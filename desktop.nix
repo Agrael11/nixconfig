@@ -1,10 +1,28 @@
-({pkgs, ...}: let
-  libbluray = pkgs.libbluray.override {
-    withAACS = true;
-    withBDplus = true;
-  };
-  vlc = pkgs.vlc.override { inherit libbluray; };
-in {
+({pkgs, pkgs-unstable, ...}: {
+
+	nixpkgs.overlays = [
+		(self: super: {
+		vlc = super.vlc.overrideAttrs (oldAttrs: {
+			buildInputs = (oldAttrs.buildInputs or []) ++ [ super.libbluray-full ];
+		});
+		})
+		# Overlay to redirect MakeMKV downloads to the Wayback Machine
+        (final: prev: {
+            makemkv = prev.makemkv.overrideAttrs (oldAttrs: {
+                srcs = [
+                    (prev.fetchurl {
+                        url = "https://web.archive.org/web/https://www.makemkv.com/download/makemkv-bin-${oldAttrs.version}.tar.gz";
+                        hash = (builtins.elemAt oldAttrs.srcs 0).outputHash or (builtins.elemAt oldAttrs.srcs 0).drvAttrs.outputHash;
+                    })
+                    (prev.fetchurl {
+                        url = "https://web.archive.org/web/https://www.makemkv.com/download/makemkv-oss-${oldAttrs.version}.tar.gz";
+                        hash = (builtins.elemAt oldAttrs.srcs 1).outputHash or (builtins.elemAt oldAttrs.srcs 1).drvAttrs.outputHash;
+                    })
+                ];
+            });
+        })
+	];
+
 	services.xserver.enable = true;
 	services.displayManager.sddm = 
 	{
@@ -26,7 +44,8 @@ in {
 	services.xserver.xkb.layout = "sk";
 	services.xserver.xkb.variant = "";
 
-	environment.systemPackages = [vlc] ++ (with pkgs; [
+	environment.systemPackages = (with pkgs; [
+		vlc
 		brave
 		gedit
 		gparted
@@ -52,17 +71,35 @@ in {
 		appimage-run
 		docker-compose
 		freerdp
+		qbittorrent
 	]);
 	
 
 	virtualisation.docker = {
 		enable = true;
 		enableOnBoot = true; 
+		#package = pkgs.docker_29
+	};
+
+	services.sunshine.package = pkgs.sunshine.override {
+		cudaSupport = true;
+		cudaPackages = pkgs.cudaPackages;
+	};
+
+	services.sunshine = {
+		enable = true;
+		autoStart = true;  # optional: starts Sunshine automatically on login
+		capSysAdmin = true;
+		openFirewall = true;
 	};
 
 	virtualisation.virtualbox.host.enable = true;
 	virtualisation.virtualbox.host.enableExtensionPack = true;
 	virtualisation.virtualbox.host.addNetworkInterface = true;
+	virtualisation.libvirtd.enable = true;
+	virtualisation.libvirtd.qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
+	programs.virt-manager.enable = true;
+	
 	users.extraGroups.vboxusers.members = [ "tachi" ];	
 
 	services.teamviewer.enable = true;

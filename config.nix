@@ -1,5 +1,5 @@
 ({pkgs, ...}: {
-	system.stateVersion = "25.11";
+	system.stateVersion = "26.05";
 
 	nix.settings = {
 		substituters = [ "https://cache.nixos.org/" ];
@@ -8,15 +8,27 @@
 	};
 
 	boot.loader.grub.enable = true;
-	boot.kernelParams = [ "quiet" "nvidia-drm.fbdev=1" "simpledrm=0" "pci=realloc" "pci=assign-busses" ];
+	boot.kernelParams = [ "intel_iommu=on" "quiet" "nvidia-drm.fbdev=1" "simpledrm=0" "pci=realloc" "pci=assign-busses" ];
 	boot.loader.efi.canTouchEfiVariables = true;
-	boot.kernelPackages = pkgs.linuxPackages_6_18;
+	boot.kernelPackages = pkgs.linuxPackages_latest;
 	boot.plymouth.enable = true;
 	boot.plymouth.theme = "breeze";
 	boot.loader.grub.memtest86.enable = true;
-	boot.initrd.kernelModules = ["usbhid" "joydev" "xpad" "videodev" "uvcvideo" "cx23885" "i2c-dev" "i2c-piix4" "i2c-i801"];
+	boot.initrd.kernelModules = ["usbhid" "joydev" "xpad" "videodev" "uvcvideo" "cx23885" "i2c-dev" "i2c-piix4" "i2c-i801" "vfio" "vfio_pci" "vfio_iommu_type1"];
 
 	security.rtkit.enable = true;
+	security.sudo.extraRules = [
+		{
+			users = [ "tachi" ];
+			commands = [
+				{
+					command = "/root/grub-switcher.sh";
+					options = [ "NOPASSWD" ];
+				}	
+			];
+		}
+	];
+
 	services.pipewire = {
 		enable = true;
 		alsa.enable = true;
@@ -54,6 +66,7 @@
 	nixpkgs.config.allowUnfree = true;
 
 	environment.systemPackages = with pkgs; [
+		pciutils
 		memtest86-efi
 		coreutils
 		hwinfo
@@ -80,8 +93,20 @@
 		tmux
 		openrgb
 		android-tools
+		grub2
+		msedit
+		dotnet-sdk_10
+		dotnet-runtime_10
+		gnome-disk-utility
+		ntfs3g
+		fastfetch
+		binutils
+		file
 	];
 
+	programs.partition-manager.enable = true;
+
+	
 	programs.nh = {
 		enable = true;
 		clean.enable = true;
@@ -99,12 +124,6 @@
 			theme = "agnoster";
 			plugins = ["git" "z"];
 		};
-	};
-
-	nix.gc = {
-		automatic = true;
-		dates = "weekly";
-		options = "--delete-older-than 30d";
 	};
 
 	documentation.enable = false;
