@@ -41,8 +41,6 @@
 	services.hardware.openrgb.enable = true;
 	services.flatpak.enable = true;
 
-	networking.hostName = "Desktop";
-
 	i18n.defaultLocale = "sk_SK.UTF-8";
 	console.keyMap = "sk-qwertz";
 
@@ -102,6 +100,7 @@
 		fastfetch
 		binutils
 		file
+		zstd
 	];
 
 	programs.partition-manager.enable = true;

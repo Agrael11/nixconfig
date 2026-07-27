@@ -72,6 +72,7 @@
 		docker-compose
 		freerdp
 		qbittorrent
+		kdePackages.qtwebengine
 	]);
 	
 
@@ -145,6 +146,9 @@
 	environment.sessionVariables = {
 		XDG_CONFIG_HOME = "$HOME/.config";
 		NIXOS_OZONE_WL = "1";
+		MANGOHUD = "1";
+		__NV_PRIME_RENDER_OFFLOAD = "1";
+		__GLX_VENDOR_LIBRARY_NAME = "nvidia";
 	};
 	
 	programs.steam = {
