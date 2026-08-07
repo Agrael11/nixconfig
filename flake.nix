@@ -49,5 +49,10 @@
 				];
 			};
 		};
+		devShells.x86_64-linux = {
+			default = import ./devShells/devshell-gcc.nix { inherit nixpkgs; };
+			gcc = import ./devShells/devshell-gcc.nix { inherit nixpkgs; };
+			gamedev = import ./devShells/devshell-gamedev.nix { inherit nixpkgs; };
+		};
 	};
 }
