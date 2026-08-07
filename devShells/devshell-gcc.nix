@@ -1,6 +1,4 @@
-{ pkgs }:
-
-pkgs.mkShell {
+({pkgs, pkgs-unstable, ...}: pkgs.mkShell {
   packages = with pkgs; [
     gcc
     gdb
@@ -13,4 +11,4 @@ pkgs.mkShell {
   shellHook = ''
     echo "Entered GCC development shell."
   '';
-}
+})
