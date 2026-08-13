@@ -96,7 +96,12 @@
   hardware.nvidia.open = false;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-
+  
+  hardware.nvidia = {
+    powerManagement.enable = true;
+    powerManagement.finegrained = false; # keep this off on Pascal
+  };
+  
   hardware.nvidia.prime = {
     sync.enable = true; # or offload mode
     intelBusId = "PCI:0:2:0";

@@ -49,5 +49,16 @@
 				];
 			};
 		};
+		devShells.x86_64-linux = let
+			pkgs = import nixpkgs { system = "x86_64-linux"; };
+			pkgs-unstable = import nixpkgs-unstable {
+				system = "x86_64-linux";
+				config.allow-unstable = true;
+			};
+		in {
+			default = import ./devShells/devshell-gcc.nix { inherit pkgs pkgs-unstable; };
+			gcc = import ./devShells/devshell-gcc.nix { inherit pkgs pkgs-unstable; };
+			gamedev = import ./devShells/devshell-gamedev.nix { inherit pkgs pkgs-unstable; };
+		};
 	};
 }
