@@ -30,11 +30,8 @@
     dotnet-sdk_10
     dotnet-runtime_10
     p7zip
-<<<<<<< HEAD
-    i2c-tools
-=======
     cowsay
     killall
->>>>>>> 1ecc5de11142afbc8aa9841f6f48d276020cf070
+    i2c-tools
   ];
 })
