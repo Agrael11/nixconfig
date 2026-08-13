@@ -14,6 +14,8 @@
   };
 
   services.hardware.openrgb.enable = true;
+  services.udev.packages = [ pkgs.openrgb ];
+
   services.flatpak.enable = true;
   services.openssh.enable = true;
 

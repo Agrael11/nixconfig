@@ -44,6 +44,7 @@
 	programs.virt-manager.enable = true;
 	
 	users.extraGroups.vboxusers.members = [ "tachi" ];	
+	users.extraGroups.i2c.members = [ "tachi" ];
 
 	services.teamviewer.enable = true;
 
