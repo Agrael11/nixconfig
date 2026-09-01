@@ -80,12 +80,7 @@
 
   hardware.enableAllFirmware = true;
 
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580.overrideAttrs (old: {
-    postPatch = (old.postPatch or "") + ''
-      substituteInPlace nvidia/os-interface.c \
-        --replace '#include <linux/sys_soc.h>' '#include <linux/sys_soc.h>#include <string.h>'
-    '';
-  });
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
 
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.nvidiaPersistenced = true;
