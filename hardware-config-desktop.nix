@@ -11,7 +11,7 @@
   boot = {
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
     initrd.kernelModules = [ "ntsync" "sg" ];
-    kernelModules = [ "kvm-intel" "sc0710"];
+    kernelModules = [ "kvm-intel" "sc0710" "i2c-dev" "i2c-piix4" "i2c-i801" ];
 
     extraModulePackages = [ ];
     loader.grub = {
@@ -110,6 +110,7 @@
 	hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.nvidiaPersistenced = true;
+  hardware.nvidia.nvidiaSettings = true; 
 
   services.xserver.videoDrivers = [ "nvidia" ];
   
@@ -122,6 +123,7 @@
   # enable automatic firmware updates with the systemd service
   # hardware.sc0710.enableFirmware = true;
 
+  hardware.i2c.enable = true;
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
   hardware.nvidia.open = false;

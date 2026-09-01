@@ -32,5 +32,6 @@
     p7zip
     cowsay
     killall
+    i2c-tools
   ];
 })
