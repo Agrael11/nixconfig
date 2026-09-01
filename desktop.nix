@@ -13,6 +13,11 @@
 	};
 
 	services.desktopManager.plasma6.enable = true;
+	xdg.portal = {
+		enable = true;
+		extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+	};
+
 	services.xserver.xkb.layout = "sk";
 	services.xserver.xkb.variant = "";
 

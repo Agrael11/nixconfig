@@ -8,6 +8,17 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
+  services.logind = {
+    enable = true;
+    settings = {
+      Login = {
+        HandlePowerKey = "suspend";
+        HandleSleepKey = "suspend";
+        PowerKeyIgnoreInhibited = "yes";
+      };
+    };
+  };
+
   boot = {
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
     initrd.kernelModules = [ "ntsync" "sg" ];
