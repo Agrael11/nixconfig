@@ -1,4 +1,4 @@
-({pkgs, pkgs-unstable, hres, vres, ...}: {
+({pkgs, pkgs-unstable, hres, vres, extraExport, ...}: {
 
 	services.xserver.enable = true;
 	services.displayManager.sddm = {
@@ -58,7 +58,8 @@
 		name = "Steam";
 		manage = "desktop";  # ← This is what Nix was missing
 		start = ''
-		exec ${pkgs.gamescope}/bin/gamescope \
+			${extraExport} \
+			exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
         	-W ${hres} -H ${vres} \
 			--steam \
@@ -67,9 +68,22 @@
 		'';
 	}
 	{
+		name = "RetroDeck";
+		manage = "desktop";
+		start = ''
+			${extraExport} \
+			exec ${pkgs.gamescope}/bin/gamescope \
+			--fullscreen \
+			-W ${hres} -H ${vres} \
+			-- \
+			net.retrodeck.retrodeck
+		'';
+	}
+	{
 		name = "RetroArch";
 		manage = "desktop";
 		start = ''
+			${extraExport} \
 			exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
 			-W ${hres} -H ${vres} \
@@ -81,6 +95,7 @@
 		name = "Kodi";
 		manage = "desktop";
 		start = ''
+			${extraExport} \
 			exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
 			-W ${hres} -H ${vres} \

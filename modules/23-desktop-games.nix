@@ -8,4 +8,8 @@
     mangohud
     gamescope
   ];
+
+  services.flatpak.packages = [
+    "net.retrodeck.retrodeck"
+  ];
 })
