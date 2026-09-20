@@ -58,8 +58,7 @@
 		name = "Steam";
 		manage = "desktop";  # ← This is what Nix was missing
 		start = ''
-			${extraExport} \
-			exec ${pkgs.gamescope}/bin/gamescope \
+			${extraExport} exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
         	-W ${hres} -H ${vres} \
 			--steam \
@@ -71,8 +70,7 @@
 		name = "RetroDeck";
 		manage = "desktop";
 		start = ''
-			${extraExport} \
-			exec ${pkgs.gamescope}/bin/gamescope \
+			${extraExport} exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
 			-W ${hres} -H ${vres} \
 			-- \
@@ -83,8 +81,7 @@
 		name = "RetroArch";
 		manage = "desktop";
 		start = ''
-			${extraExport} \
-			exec ${pkgs.gamescope}/bin/gamescope \
+			${extraExport} exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
 			-W ${hres} -H ${vres} \
 			-- \
@@ -95,8 +92,7 @@
 		name = "Kodi";
 		manage = "desktop";
 		start = ''
-			${extraExport} \
-			exec ${pkgs.gamescope}/bin/gamescope \
+			${extraExport} exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
 			-W ${hres} -H ${vres} \
 			-- \
