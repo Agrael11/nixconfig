@@ -16,6 +16,8 @@
 			Desktop = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
         		specialArgs = { 
+					hres = "3840"; 
+					vres = "2160"; 
 					pkgs-unstable = import nixpkgs-unstable {
 						system = "x86_64-linux";
 						config.allow-unstable = true;
@@ -34,6 +36,8 @@
 			Laptop = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
         		specialArgs = { 
+					hres = "1920"; 
+					vres = "1080"; 
 					pkgs-unstable = import nixpkgs-unstable {
 						system = "x86_64-linux";
 						config.allow-unstable = true;

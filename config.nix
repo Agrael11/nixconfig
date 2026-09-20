@@ -20,6 +20,7 @@
 		./modules/30-services.nix
 		./modules/31-samba.nix
 		./modules/32-firewall.nix
+		./modules/33-retrodeck.nix
 		./modules/41-sddm-astronaut-theme.nix
 		./modules/60-overlays.nix
 	];
@@ -27,7 +28,7 @@
 	boot.loader.grub.enable = true;
 	boot.kernelParams = [ "intel_iommu=on" "quiet" "nvidia-drm.fbdev=1" "simpledrm=0" "pci=realloc" "pci=assign-busses" ];
 	boot.loader.efi.canTouchEfiVariables = true;
-	boot.kernelPackages = pkgs.linuxPackages_latest;
+	boot.kernelPackages = pkgs.linuxPackages_7_1;
 	boot.plymouth.enable = true;
 	boot.plymouth.theme = "breeze";
 	boot.loader.grub.memtest86.enable = true;

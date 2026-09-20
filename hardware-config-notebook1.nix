@@ -62,6 +62,19 @@
     fsType = "ext4";
   };
 
+  fileSystems."/media/retro-shares" = {
+    fsType = "cifs";
+    device = "//192.168.1.3/moviestuff_2/ROMS"; 
+    options = [
+      "username=MEDIASHARE"
+      "password=MEDIASHARE"
+      "uid=1000"
+      "gid=1000"
+      "nofail"
+      "vers=3.0"
+    ];
+  };
+
   swapDevices =
     [ { device = "/dev/disk/by-uuid/da633cab-426d-4ef5-9479-2e1844b143c1"; }
     ];

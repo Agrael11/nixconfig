@@ -1,4 +1,4 @@
-({pkgs, pkgs-unstable, ...}: {
+({pkgs, pkgs-unstable, hres, vres, ...}: {
 
 	services.xserver.enable = true;
 	services.displayManager.sddm = {
@@ -60,7 +60,7 @@
 		start = ''
 		exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
-        	-W 3840 -H 2160 \
+        	-W ${hres} -H ${vres} \
 			--steam \
 			-- \
 			steam -tenfoot
@@ -72,7 +72,7 @@
 		start = ''
 			exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
-			-W 3840 -H 2160 \
+			-W ${hres} -H ${vres} \
 			-- \
 			retroarch
 		'';
@@ -83,7 +83,7 @@
 		start = ''
 			exec ${pkgs.gamescope}/bin/gamescope \
 			--fullscreen \
-			-W 3840 -H 2160 \
+			-W ${hres} -H ${vres} \
 			-- \
 			kodi
 		'';
