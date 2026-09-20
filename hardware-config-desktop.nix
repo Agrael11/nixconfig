@@ -15,6 +15,8 @@
         HandlePowerKey = "poweroff";
         HandleSleepKey = "suspend";
         PowerKeyIgnoreInhibited = "yes";
+        SuspendKeyIgnoreInhibited = "yes";
+        InhibitorsMax = 0;
       };
     };
   };
