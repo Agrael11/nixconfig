@@ -1,6 +1,6 @@
 ({pkgs, lib, ...}: {
 		
-		boot.kernelPackages = pkgs.linuxPackages;
+		boot.kernelPackages = pkgs.linuxPackages_latest;
 
 		networking.hostName = "Laptop";
 })

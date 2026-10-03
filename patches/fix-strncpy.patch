@@ -1,0 +1,8 @@
+--- a/kernel/os-interface.c
++++ b/kernel/os-interface.c
+@@ -764,7 +764,8 @@
+     // Example replacement pattern for os-interface.c strncpy usage:
+     // Replace code that expects a pointer return with a direct strscpy and destination reference.
+ -   return strncpy(dest, src, count);
++   strscpy(dest, src, count);
++   return dest;

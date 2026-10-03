@@ -105,8 +105,10 @@
   nixpkgs.config.allowUnfree = true;
 
   hardware.enableAllFirmware = true;
-
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+  
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580.overrideAttrs (old: {
+    patches = (old.patches or []) ++ [ ./fix-strncpy.patch ];
+  });
 
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.nvidiaPersistenced = true;
