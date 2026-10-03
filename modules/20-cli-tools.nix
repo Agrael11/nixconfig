@@ -33,5 +33,7 @@
     cowsay
     killall
     i2c-tools
+    fastfetch
+    cowsay
   ];
 })
