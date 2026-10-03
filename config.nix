@@ -56,6 +56,12 @@
 
 	services.hardware.openrgb.enable = true;
 	services.flatpak.enable = true;
+	system.activationScripts.updateFlatpaks = {
+		text = ''
+			PATH=$PATH:${pkgs.flatpak}/bin
+			flatpak update --noninteractive || true
+		'';
+	};
 
 	i18n.defaultLocale = "sk_SK.UTF-8";
 	console.keyMap = "sk-qwertz";
