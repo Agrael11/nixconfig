@@ -107,7 +107,28 @@
   hardware.enableAllFirmware = true;
   
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.legacy_580.overrideAttrs (old: {
-    patches = (old.patches or []) ++ [ ./fix-strncpy.patch ];
+    nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ pkgs.python3 ];
+    postPatch = ''
+      python3 - <<'EOF'
+      from pathlib import Path
+      import re
+
+      for p in Path("kernel").rglob("*.[ch]"):
+          text = p.read_text(encoding="utf-8", errors="ignore")
+          
+          # Handle return strncpy with proper return pointer adjustment
+          text = re.sub(
+              r'return\s+\bstrncpy\s*\(([^,]+),\s*([^,]+),\s*([^)]+)\)\s*;',
+              r'strscpy(\1, \2, \3);\n    return \1;',
+              text
+          )
+          
+          # Replace only exact strncpy function calls, sparing symbols like nvkms_strncpy
+          text = re.sub(r'\bstrncpy\s*\(', 'strscpy(', text)
+          
+          p.write_text(text, encoding="utf-8")
+      EOF
+    '';
   });
 
   hardware.nvidia.modesetting.enable = true;
