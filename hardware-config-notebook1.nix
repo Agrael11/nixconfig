@@ -8,18 +8,18 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  services.logind = {
-    enable = true;
-    settings = {
-      Login = {
-        HandlePowerKey = "suspend";
-        HandleSleepKey = "suspend";
-        PowerKeyIgnoreInhibited = "yes";
-        SuspendKeyIgnoreInhibited = "yes";
-        InhibitorsMax = 0;
-      };
-    };
-  };
+#  services.logind = {
+#    enable = true;
+#    settings = {
+#      Login = {
+#        HandlePowerKey = "suspend";
+#        HandleSleepKey = "suspend";
+#        PowerKeyIgnoreInhibited = "yes";
+#        SuspendKeyIgnoreInhibited = "yes";
+#        InhibitorsMax = 0;
+#      };
+#    };
+#  };
 
   boot = {
     initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod" "sr_mod" ];
