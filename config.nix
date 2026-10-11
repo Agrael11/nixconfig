@@ -17,6 +17,7 @@
 		./modules/23-retroarch-fix.nix
 		./modules/24-cli-productivity.nix
 		./modules/25-desktop-productivity.nix
+		./modules/26-isotools.nix
 		./modules/30-services.nix
 		./modules/31-samba.nix
 		./modules/32-firewall.nix

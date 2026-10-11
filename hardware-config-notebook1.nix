@@ -65,15 +65,71 @@
   fileSystems."/media/retro-shares" = {
     fsType = "cifs";
     device = "//192.168.1.3/moviestuff_2/ROMS"; 
-    options = [
-      "username=MEDIASHARE"
-      "password=MEDIASHARE"
-      "uid=1000"
-      "gid=1000"
+    options = let
+    automount_opts = "x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in [
+      "${automount_opts},credentials=/etc/nixos/secrets/retroshares,uid=1000,gid=1000,vers=3.0"
       "nofail"
-      "vers=3.0"
     ];
   };
+
+
+  fileSystems."/media/main-shares/F" = {
+    fsType = "cifs";
+    device = "//192.168.1.3/F/"; 
+    options = let
+    automount_opts = "x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in [
+      "${automount_opts},credentials=/etc/nixos/secrets/mainshares,uid=1000,gid=1000,vers=3.0"
+      "nofail"
+    ];
+  };
+
+  fileSystems."/media/main-shares/moviestuff" = {
+    fsType = "cifs";
+    device = "//192.168.1.3/moviestuff/"; 
+    options = let
+    automount_opts = "x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in [
+      "${automount_opts},credentials=/etc/nixos/secrets/mainshares,uid=1000,gid=1000,vers=3.0"
+      "nofail"
+    ];
+  };
+
+
+  fileSystems."/media/main-shares/moviestuff_2" = {
+    fsType = "cifs";
+    device = "//192.168.1.3/moviestuff_2/"; 
+    options = let
+    automount_opts = "x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in [
+      "${automount_opts},credentials=/etc/nixos/secrets/mainshares,uid=1000,gid=1000,vers=3.0"
+      "nofail"
+    ];
+  };
+
+  fileSystems."/media/main-shares/PS2" = {
+    fsType = "cifs";
+    device = "//192.168.1.3/PS2/"; 
+    options = let
+    automount_opts = "x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in [
+      "${automount_opts},credentials=/etc/nixos/secrets/mainshares,uid=1000,gid=1000,vers=3.0"
+      "nofail"
+    ];
+  };
+
+  fileSystems."/media/main-shares/Users" = {
+    fsType = "cifs";
+    device = "//192.168.1.3/Users/"; 
+    options = let
+    automount_opts = "x-systemd.automount,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
+    in [
+      "${automount_opts},credentials=/etc/nixos/secrets/mainshares,uid=1000,gid=1000,vers=3.0"
+      "nofail"
+    ];
+  };
+
 
   swapDevices =
     [ { device = "/dev/disk/by-uuid/da633cab-426d-4ef5-9479-2e1844b143c1"; }
