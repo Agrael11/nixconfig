@@ -30,7 +30,8 @@ let
           fi
       fi
 
-      EXT="${"${IMAGE_FILE##*.}"}"
+      # Fixed extension extraction for Bash
+      EXT="''${IMAGE_FILE##*.}"
       EXT_LOWER=$(echo "$EXT" | tr '[:upper:]' '[:lower:]')
 
       echo "Mounting $IMAGE_FILE to $MOUNT_DIR..."
