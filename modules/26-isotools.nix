@@ -12,25 +12,27 @@ let
       IMAGE_FILE="$1"
 
       if [ -z "$IMAGE_FILE" ] || [ ! -f "$IMAGE_FILE" ]; then
-          echo "Usage: mountiso <path_to_image.(iso|cue|bin|mdf)>"
+          echo "Usage: mountiso <path_to_image.(iso|cue|bin|mdf|mds)>"
           exit 1
       fi
 
+      USER_ID=$(id -u)
+      GROUP_ID=$(id -g)
+
+      # Ensure /media/iso exists and is owned by your user using numeric IDs
       if [ ! -d "$MOUNT_DIR" ]; then
-          echo "Creating directory $MOUNT_DIR..."
-          sudo mkdir -p "$MOUNT_DIR"
+          sudo  mkdir -p "$MOUNT_DIR"
+          sudo chown "$USER_ID:$GROUP_ID" "$MOUNT_DIR"
+      elif [ ! -O "$MOUNT_DIR" ]; then
+          sudo chown "$USER_ID:$GROUP_ID" "$MOUNT_DIR"
       fi
 
+      # Unmount if already active
       if mountpoint -q "$MOUNT_DIR" || grep -qs "$MOUNT_DIR" /proc/mounts; then
           echo "Unmounting $MOUNT_DIR..."
-          if command -v fusermount &> /dev/null && fusermount -u "$MOUNT_DIR" 2>/dev/null; then
-              true
-          else
-              sudo umount "$MOUNT_DIR"
-          fi
+          fusermount -u "$MOUNT_DIR" 2>/dev/null || sudo umount "$MOUNT_DIR" 2>/dev/null || true
       fi
 
-      # Fixed extension extraction for Bash
       EXT="''${IMAGE_FILE##*.}"
       EXT_LOWER=$(echo "$EXT" | tr '[:upper:]' '[:lower:]')
 
@@ -38,21 +40,23 @@ let
 
       case "$EXT_LOWER" in
           iso|bin)
-              sudo mount -o loop "$IMAGE_FILE" "$MOUNT_DIR"
+              sudo mount -o loop,uid="$USER_ID",gid="$GROUP_ID",umask=022 "$IMAGE_FILE" "$MOUNT_DIR"
               ;;
           cue|mdf|mds)
               if command -v fuseiso &> /dev/null; then
+                  # Run fuseiso directly as user since MOUNT_DIR is user-owned
                   fuseiso "$IMAGE_FILE" "$MOUNT_DIR"
               else
-                  sudo mount -o loop "$IMAGE_FILE" "$MOUNT_DIR"
+                  echo "Error: fuseiso is required for .$EXT_LOWER files."
+                  exit 1
               fi
               ;;
           *)
-              sudo mount -o loop "$IMAGE_FILE" "$MOUNT_DIR"
+              sudo mount -o loop,uid="$USER_ID",gid="$GROUP_ID",umask=022 "$IMAGE_FILE" "$MOUNT_DIR"
               ;;
       esac
 
-      echo "Successfully mounted!"
+      echo "Successfully mounted and accessible!"
     '';
   };
 in {

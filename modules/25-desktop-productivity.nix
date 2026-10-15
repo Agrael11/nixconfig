@@ -11,5 +11,8 @@
     unityhub
     easyeffects
     rnnoise-plugin
+    jetbrains.rust-rover
+    jetbrains.clion
+    jetbrains.rider
   ];
 })

@@ -12,6 +12,7 @@
     curl
     sudo
     tree
+    rar
     zip
     unzip
     mc
