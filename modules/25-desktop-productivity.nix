@@ -14,5 +14,6 @@
     jetbrains.rust-rover
     jetbrains.clion
     jetbrains.rider
+    jetbrains.idea
   ];
 })
