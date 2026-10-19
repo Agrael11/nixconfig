@@ -23,11 +23,12 @@
 					pkgs-unstable = import nixpkgs-unstable {
 						system = "x86_64-linux";
 						config.allow-unstable = true;
+  						config.allowUnfree = true;
 					};
 					inherit inputs; 
 				};
 				modules = [
-        			sc0710.nixosModules.default
+					./modules/61-sc0710-fix.nix
 					./hardware-config-desktop.nix
 					./config.nix
 					./config-desktop.nix

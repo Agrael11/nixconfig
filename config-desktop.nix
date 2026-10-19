@@ -1,6 +1,6 @@
-({pkgs, ...}: {
+({pkgs, pkgs-unstable, ...}: {
 
-	boot.kernelPackages = pkgs.linuxPackages_latest;
+	boot.kernelPackages = pkgs-unstable.linuxPackages_latest;
 	
 	networking.hostName = "Desktop";
 })
