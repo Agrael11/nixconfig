@@ -40,7 +40,10 @@
     xorgproto
     libX11
     libX11.dev
-  ];
+
+    jdk25
+    maven
+  ] ;
 
   environment.sessionVariables = {
     CPATH = "/run/current-system/sw/include";
