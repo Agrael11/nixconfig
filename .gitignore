@@ -1,4 +1,5 @@
 flake.lock
 log.log
 lightswitch.sh
+.lightswitch.conf
 secrets/
