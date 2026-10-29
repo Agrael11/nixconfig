@@ -4,7 +4,7 @@ let
   curseforge-src = pkgs.fetchurl {
     name = "CurseForge.AppImage";
     url = "https://curseforge.overwolf.com/downloads/curseforge-latest-linux.AppImage";
-    hash = "sha256-co4Exw7Nm57m9m1oyFQ9hypnulZVFHfO6iopp3pWPD8="; 
+    hash = "sha256-vJpsXJabVyp6Ge+NPRwoy7yNUtlsO5xG7I1MrqUW7zc="; 
   };
 
    curseforge-bin = pkgs.appimageTools.wrapType2 {

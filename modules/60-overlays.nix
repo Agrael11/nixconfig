@@ -7,20 +7,20 @@
       });
     })
 
-    # Overlay to redirect MakeMKV downloads to the Wayback Machine
-    #(final: prev: {
-    #  makemkv = prev.makemkv.overrideAttrs (oldAttrs: {
-    #    srcs = [
-    #      (prev.fetchurl {
-    #        url = "https://web.archive.org/web/20260604163234/https://www.makemkv.com/download/makemkv-bin-${oldAttrs.version}.tar.gz";
-    #        hash = (builtins.elemAt oldAttrs.srcs 0).outputHash or (builtins.elemAt oldAttrs.srcs 0).drvAttrs.outputHash;
-    #      })
-    #      (prev.fetchurl {
-    #        url = "https://web.archive.org/web/20260604163234/https://www.makemkv.com/download/makemkv-oss-${oldAttrs.version}.tar.gz";
-    #        hash = (builtins.elemAt oldAttrs.srcs 1).outputHash or (builtins.elemAt oldAttrs.srcs 1).drvAttrs.outputHash;
-    #      })
-    #    ];
-    #  });
-    #})
+    (final: prev: {
+      makmkv = pkgs.makemkv.overrideAttrs (oldAttrs: rec {
+        version = "2.0.0";
+        
+        src_bin = pkgs.fetchurl {
+          url = "https://makemkv.com{version}.tar.gz";
+          hash = "sha256-Y7JNeF5SZ9kITGFqQ+vuU8Qu5lCDT2r/rzPE6pLQzlU="; # If this matches the 404 hash, swap to lib.fakeHash first!
+        };
+
+        src_oss = pkgs.fetchurl {
+          url = "https://makemkv.com{version}.tar.gz";
+          hash = pkgs.lib.fakeHash; 
+        };
+      });
+    })
   ];
 })
