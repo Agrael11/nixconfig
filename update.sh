@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Clear cached sudo credentials on completion, errors, or interruption.
+trap 'sudo -k' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
 # Spoľahlivo zistí reálny adresár skriptu aj v prípade, že je spustený cez symlink z PATH
 SCRIPT_DIR="$(cd -- "$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")")" && pwd)"
 cd "$SCRIPT_DIR"
@@ -62,6 +67,7 @@ EOF
 # Čistenie systému
 cmd_clean() {
     echo "Cleaning up system..."
+    sudo -v
     nh clean all
 }
 
@@ -120,6 +126,7 @@ cmd_update() {
     fi
 
     echo "Running nh os $action (jobs: $MAX_JOBS, cores: $CORES)..."
+    sudo -v
     nh os "$action" --update -- \
         --option max-jobs "$MAX_JOBS" \
         --option cores "$CORES" \
