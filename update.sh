@@ -74,7 +74,8 @@ cmd_clean() {
 # Hlavná logika pre update / switch / boot / reboot
 cmd_update() {
     local action="switch"
-    local do_reboot=false
+    local explicit_action=""
+    local power_action=""
 
     # Ak nie je spravený setup, pustíme ho automaticky
     if [[ ! -f "$CONFIG_FILE" ]]; then
@@ -87,13 +88,20 @@ cmd_update() {
     # Parsovanie flagov špecifických pre update akciu
     while [[ $# -gt 0 ]]; do
         case "$1" in
-            boot)
-                action="boot"
+            boot|switch)
+                explicit_action="$1"
                 shift
                 ;;
             reboot|--reboot)
-                action="boot"
-                do_reboot=true
+                power_action="reboot"
+                shift
+                ;;
+            --shutdown)
+                power_action="poweroff"
+                shift
+                ;;
+            --sleep)
+                power_action="suspend"
                 shift
                 ;;
             -j|--jobs)
@@ -112,6 +120,12 @@ cmd_update() {
                 ;;
         esac
     done
+
+    # Explicit boot/switch overrides the power action's default in any order.
+    case "$power_action" in
+        reboot|poweroff) action="boot" ;;
+    esac
+    action="${explicit_action:-$action}"
 
     # Validácia
     if ! [[ "$MAX_JOBS" =~ ^[1-9][0-9]*$ && "$CORES" =~ ^[1-9][0-9]*$ ]]; then
@@ -132,10 +146,20 @@ cmd_update() {
         --option cores "$CORES" \
         "${extra_args[@]}"
 
-    if [[ "$do_reboot" == true ]]; then
-        echo "Rebooting system..."
-        sudo reboot
-    fi
+    case "$power_action" in
+        reboot)
+            echo "Rebooting system..."
+            sudo reboot
+            ;;
+        poweroff)
+            echo "Shutting down system..."
+            sudo systemctl poweroff
+            ;;
+        suspend)
+            echo "Suspending system..."
+            sudo systemctl suspend
+            ;;
+    esac
 }
 
 usage() {
@@ -149,8 +173,11 @@ Commands:
   all                Run 'clean' followed by 'update'
 
 Update Options:
-  boot               Perform 'nh os boot' instead of 'switch'
-  reboot, --reboot   Perform 'nh os boot' and then reboot the machine
+  boot, switch       Explicit update mode (overrides power-action defaults)
+  reboot, --reboot    Reboot after updating (defaults to boot)
+  --shutdown         Shut down after updating (defaults to boot)
+  --sleep            Suspend after updating (defaults to switch)
+                     If multiple power actions are given, the last one wins
   -j, --jobs NUM     Override max jobs
   -c, --cores NUM    Override cores per job
   -h, --help         Show this help message
@@ -182,7 +209,7 @@ case "$1" in
     -h|--help)
         usage
         ;;
-    boot|reboot|--reboot|-j|--jobs|-c|--cores)
+    boot|switch|reboot|--reboot|--shutdown|--sleep|-j|--jobs|-c|--cores)
         cmd_update "$@"
         ;;
     *)
