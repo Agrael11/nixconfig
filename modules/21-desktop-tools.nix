@@ -21,6 +21,11 @@
     kodi
     ffmpeg
     makemkv
-    bottles
+  ];
+
+
+  services.flatpak.packages = [
+    "com.usebottles.bottles"
+    "net.retrodeck.retrodeck"
   ];
 })
