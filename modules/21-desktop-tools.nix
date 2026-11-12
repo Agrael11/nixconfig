@@ -21,6 +21,7 @@
     kodi
     ffmpeg
     makemkv
+    thunderbird
   ];
 
 
