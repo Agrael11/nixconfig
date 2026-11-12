@@ -29,13 +29,14 @@
     
     extraModulePackages = [ config.boot.kernelPackages.nvidiaPackages.legacy_580 ];
     
+    loader.timeout = 0;
+    
     loader.grub = {
       efiSupport = true;
       device = "nodev";
       useOSProber = true;
       default = "saved";
       configurationLimit = 3;
-      timeout = 0;
     };
     loader.grub2-theme = {
       enable = true;
