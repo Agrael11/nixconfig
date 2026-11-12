@@ -22,5 +22,14 @@
         };
       });
     })
+
+    (final: prev: {
+      vscode = prev.vscode.overrideAttrs (old: {
+        prePatch = (old.prePatch or "") + ''
+          mkdir -p resources/app/node_modules/@vscode/ripgrep/bin
+          touch resources/app/node_modules/@vscode/ripgrep/bin/rg
+        '';
+      });
+    })
   ];
 })
