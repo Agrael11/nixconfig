@@ -1,5 +1,6 @@
 { inputs, ... }: {
   imports = [
+    ./remote-builder.nix
     ../../modules/common/nix.nix
     ../../modules/common/sudo.nix
     ../../modules/common/users.nix
