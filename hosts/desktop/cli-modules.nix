@@ -14,6 +14,7 @@
     ../../modules/cli/nix-tools.nix
     ../../modules/cli/isotools.nix
     ../../modules/cli/services/ssh.nix
+    ../../modules/cli/services/mdns.nix
     ../../modules/cli/services/samba.nix
     ../../modules/cli/services/containers.nix
     ../../modules/cli/services/virtualisation.nix
