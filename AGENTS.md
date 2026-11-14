@@ -22,13 +22,13 @@ This repository configures personal NixOS hosts `Desktop` (physical tower) and `
 
 ## Known intentional workarounds
 
-- Laptop legacy NVIDIA 580 uses an imperfect `strncpy` workaround for kernel 7.2; do not remove blindly.
-- Desktop SC0710 uses unstable `stdenv`; retest before removing.
-- VS Code and MakeMKV overlays were added to work around upstream packaging failures. Verify current behavior before deleting.
-- RetroArch sets the broken `fbalpha2012` core to `null` to exclude it from `retroarch-full`.
+- Phase 7 retired the Laptop NVIDIA `strncpy` patch after unpatched 580.178.04 built against kernel 7.3.4 and produced identical kernel modules. Recheck compatibility when either updates.
+- Desktop SC0710 now imports its upstream module directly: the old `stdenv` wrapper produced identical driver/helper derivations. Kernel packages still determine the driver's build environment.
+- Phase 7 removed the obsolete VS Code `rg` workaround after an unmodified build and CLI/ripgrep checks. The removed MakeMKV overlay used the inactive typo `makmkv`; the installed `makemkv` was already upstream.
+- Phase 7 restored RetroArch's `fbalpha2012` after a successful build and library/API check. Game playback remains a runtime check.
 - `initialPassword = "Nix"` is an installation bootstrap convention; the user changes real passwords afterward. Treat credential verification as sensitive and never store passwords in Git.
 - Sudo timeout, latest kernels, short garbage-retention policy, and zero-second Laptop GRUB menu are intentional choices, not refactoring targets by default.
-- Desktop logind power-management inhibitor overrides were a workaround for kernel 7.0 and **are approved for removal** in the planned cleanup phase.
+- Phase 7 removed Desktop's kernel-7.0 logind workaround; normal power-management inhibitor handling is intentional.
 
 ## Collaboration
 
