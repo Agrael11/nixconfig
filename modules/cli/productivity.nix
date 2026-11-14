@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, pkgs-unstable, ... }: {
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
@@ -7,6 +7,6 @@
 
   environment.systemPackages = with pkgs; [
      git
-     codex
+     pkgs-unstable.codex
   ];
 }
