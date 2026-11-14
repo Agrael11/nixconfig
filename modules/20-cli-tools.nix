@@ -28,7 +28,6 @@
     v4l-utils
     mono
     msedit
-    dotnet-sdk_10
     dotnet-runtime_10
     p7zip
     cowsay
