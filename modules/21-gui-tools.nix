@@ -1,5 +1,5 @@
 ({ pkgs, ... }: {
-  # Desktop utilities and GUI helper packages.
+  # Graphical utilities and GUI helper packages.
 
   environment.systemPackages = with pkgs; [
     gnome-disk-utility

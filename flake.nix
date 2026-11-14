@@ -41,7 +41,7 @@
 					./config.nix
 					./config-desktop.nix
     				./modules/32-samba-desktop.nix
-					./desktop.nix
+					./gui.nix
           			grub2-themes.nixosModules.default
 					nix-flatpak.nixosModules.nix-flatpak
 				];
@@ -62,7 +62,7 @@
 					./hardware-config-notebook1.nix
 					./config.nix
 					./config-notebook1.nix
-					./desktop.nix
+					./gui.nix
 					grub2-themes.nixosModules.default
 					nix-flatpak.nixosModules.nix-flatpak
 				];

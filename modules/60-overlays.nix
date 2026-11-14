@@ -1,5 +1,5 @@
 ({ pkgs, ... }: {
-  # Custom package overlays for desktop builds.
+  # Custom package overlays for graphical applications.
   nixpkgs.overlays = [
     (self: super: {
       vlc = super.vlc.overrideAttrs (oldAttrs: {

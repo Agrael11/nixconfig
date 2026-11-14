@@ -1,5 +1,5 @@
 ({ pkgs, ... }: {
-  # Desktop entertainment and gaming packages.
+  # Graphical entertainment and gaming packages.
 
   environment.systemPackages = with pkgs; [
     (lutris.override {

@@ -11,12 +11,12 @@
 	imports = [
 		./modules/10-users.nix
 		./modules/20-cli-tools.nix
-		./modules/21-desktop-tools.nix
+		./modules/21-gui-tools.nix
 		./modules/22-cli-games.nix
-		./modules/23-desktop-games.nix
+		./modules/23-gui-games.nix
 		./modules/23-retroarch-fix.nix
 		./modules/24-cli-productivity.nix
-		./modules/25-desktop-productivity.nix
+		./modules/25-gui-productivity.nix
 		./modules/26-isotools.nix
 		./modules/27-curseforge.nix
 		./modules/30-services.nix

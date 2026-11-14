@@ -21,7 +21,7 @@
 	services.xserver.xkb.layout = "sk";
 	services.xserver.xkb.variant = "";
 
-	# Packages for desktop systems are now organized in dedicated modules under modules/.
+	# Graphical applications are organized in dedicated modules under modules/.
 
 	virtualisation.docker = {
 		enable = true;
