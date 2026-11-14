@@ -145,11 +145,17 @@ build only the probe, without updating inputs or activating either host.
    kernel rebuild just to create load. A remote job's compiler failure is a build
    failure, not a promise to retry locally.
 
-Before calling Phase 9 complete, also validate an ordinary Laptop system build
-through `nh os build` (without activation), the next user-approved normal update
-on each machine, and behavior while both update simultaneously. Keep the small
-probe evidence separate from full workflow validation. No test here authorizes
-activation, cleanup, reboot, or changing either host's SSH credentials remotely.
+Phase 9 was accepted as complete on 2026-11-14 after the user confirmed actual
+Laptop → Desktop offloading (four cores), local fallback after an unreachable SSH
+builder (one core), and recovery to Desktop on a fresh invocation. The eight mock
+update-script tests also passed on Laptop.
+
+Busy-host behavior, simultaneous updates, actual Desktop-off discovery timeouts,
+mid-build disconnects, and a full ordinary `nixupdate` using the builder remain
+unverified. Observe these during normal use; the user chose not to manufacture a
+large build or repeat full updates solely for testing. Keep the small probe
+evidence separate from full workflow validation. No test here authorizes activation,
+cleanup, reboot, or changing either host's SSH credentials remotely.
 
 ## References checked
 
