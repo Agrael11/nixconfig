@@ -16,6 +16,8 @@
     }
   ];
 
+  users.groups.optical = {};
+
   users.users.root = {
     initialPassword = "Nix";
     shell = pkgs.zsh;
