@@ -1,6 +1,6 @@
 { inputs, ... }: {
   imports = [
-    ../../modules/hardware/sc0710-fix.nix
+    inputs.sc0710.nixosModules.default
     ./hardware-generated.nix
     ./hardware-manual.nix
     inputs.grub2-themes.nixosModules.default

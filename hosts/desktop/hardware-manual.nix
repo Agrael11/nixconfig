@@ -1,19 +1,6 @@
 # Additional hardware settings and compatibility workarounds.
 { config, lib, pkgs, pkgs-unstable, ... }: {
 
-  services.logind = {
-    enable = true;
-    settings = {
-      Login = {
-        HandlePowerKey = "poweroff";
-        HandleSleepKey = "suspend";
-        PowerKeyIgnoreInhibited = "yes";
-        SuspendKeyIgnoreInhibited = "yes";
-        InhibitorsMax = 0;
-      };
-    };
-  };
-
   boot = {
     initrd.kernelModules = ["usbhid" "joydev" "xpad" "videodev" "uvcvideo" "cx23885" "i2c-dev" "i2c-piix4" "i2c-i801" "vfio" "vfio_pci" "vfio_iommu_type1"] ++ [ "ntsync" "sg" ];
 
