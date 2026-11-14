@@ -1,9 +1,4 @@
 ({ pkgs, ... }: {
-  services.displayManager.sddm = {
-    enable = true;
-    theme = "astronaut";
-  };
-
   environment.systemPackages = [
     (pkgs.stdenv.mkDerivation {
       pname = "sddm-theme-astronaut";

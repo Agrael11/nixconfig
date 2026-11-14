@@ -16,7 +16,6 @@
     zip
     unzip
     mc
-    git
     file
     zstd
     android-tools
@@ -34,6 +33,5 @@
     killall
     i2c-tools
     fastfetch
-    cowsay
   ];
 })

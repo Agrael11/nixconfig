@@ -3,7 +3,6 @@
 
   environment.systemPackages = with pkgs; [
     gnome-disk-utility
-    fastfetch
     docker-compose
     kdePackages.qtwebengine
     gparted
@@ -27,6 +26,5 @@
 
   services.flatpak.packages = [
     "com.usebottles.bottles"
-    "net.retrodeck.retrodeck"
   ];
 })

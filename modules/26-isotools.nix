@@ -63,7 +63,6 @@ in {
   environment.systemPackages = with pkgs; [
     mountisoScript
     util-linux
-    coreutils
     fuseiso
   ];
 }

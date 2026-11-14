@@ -34,70 +34,15 @@
 	boot.loader.grub.memtest86.enable = true;
 	boot.initrd.kernelModules = ["usbhid" "joydev" "xpad" "videodev" "uvcvideo" "cx23885" "i2c-dev" "i2c-piix4" "i2c-i801" "vfio" "vfio_pci" "vfio_iommu_type1"];
 
-	security.rtkit.enable = true;
-	security.sudo.extraRules = [
-		{
-			users = [ "tachi" ];
-			commands = [
-				{
-					command = "/root/grub-switcher.sh";
-					options = [ "NOPASSWD" ];
-				}	
-			];
-		}
-	];
 	security.sudo.extraConfig = ''
     	Defaults pwfeedback
     	Defaults timestamp_timeout=-1
   	'';
 
-
-	services.pipewire = {
-		enable = true;
-		alsa.enable = true;
-		alsa.support32Bit = true;
-		pulse.enable = true;
-		jack.enable = true;
-	};
-
-
-	services.hardware.openrgb.enable = true;
-	services.flatpak.enable = true;
 	system.activationScripts.updateFlatpaks = {
 		text = ''
 			PATH=$PATH:${pkgs.flatpak}/bin
 			flatpak update --noninteractive || true
 		'';
 	};
-
-	i18n.defaultLocale = "sk_SK.UTF-8";
-	console.keyMap = "sk-qwertz";
-
-	services.openssh.enable = true;
-
-
-
-	programs.partition-manager.enable = true;
-
-	
-	programs.nh = {
-		enable = true;
-		clean.enable = true;
-		clean.extraArgs = "--keep-since 4d --keep 3";
-	};
-
-	programs.noisetorch.enable = true;
-  	time.timeZone = "Europe/Bratislava";
-  	time.hardwareClockInLocalTime = true;
-
-	programs.zsh = {
-		enable = true;
-		ohMyZsh = {
-			enable = true;
-			theme = "agnoster";
-			plugins = ["git" "z"];
-		};
-	};
-
-	documentation.enable = false;
 })
