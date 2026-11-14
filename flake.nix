@@ -35,16 +35,7 @@
 					};
 					inherit inputs; 
 				};
-				modules = [
-					./modules/hardware/sc0710-fix.nix
-					./hardware-config-desktop.nix
-					./config.nix
-					./config-desktop.nix
-    				./modules/32-samba-desktop.nix
-					./gui.nix
-          			grub2-themes.nixosModules.default
-					nix-flatpak.nixosModules.nix-flatpak
-				];
+				modules = [ ./hosts/desktop/default.nix ];
 			};
 			Laptop = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
@@ -58,14 +49,7 @@
 					};
 					inherit inputs; 
 				};
-				modules = [
-					./hardware-config-notebook1.nix
-					./config.nix
-					./config-notebook1.nix
-					./gui.nix
-					grub2-themes.nixosModules.default
-					nix-flatpak.nixosModules.nix-flatpak
-				];
+				modules = [ ./hosts/laptop/default.nix ];
 			};
 		};
 	};
