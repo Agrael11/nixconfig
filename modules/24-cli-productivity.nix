@@ -1,5 +1,11 @@
 ({ pkgs, ... }: {
-  # Productivity tooling for command-line workflows.programs.nix-ld.enable = true;
+  # Productivity tooling for command-line workflows.
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
   
   programs.nix-ld.libraries = with pkgs; [
     stdenv.cc.cc

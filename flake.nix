@@ -4,6 +4,14 @@
 		nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
 		nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 		nix-flatpak.url = "github:gmodena/nix-flatpak";
+    jetbrains-plugins = {
+      url = "github:nix-community/nix-jetbrains-plugins";
+      flake = false;
+    };
+    vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      flake = false;
+    };
     	
 		sc0710.url = "github:Nakildias/sc0710";
 		grub2-themes = {
@@ -12,7 +20,7 @@
 		};
 	};
 	
-	outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nix-flatpak, sc0710, grub2-themes }: {
+	outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, nix-flatpak, sc0710, grub2-themes, jetbrains-plugins, vscode-extensions }: {
 		nixosConfigurations = {
 			Desktop = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
