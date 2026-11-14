@@ -5,5 +5,8 @@
     nix-direnv.enable = true;
   };
 
-  environment.systemPackages = [ pkgs.git ];
+  environment.systemPackages = with pkgs; [
+     git
+     codex
+  ];
 }
