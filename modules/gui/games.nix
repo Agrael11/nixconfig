@@ -5,20 +5,21 @@
     (lutris.override {
       extraLibraries = pkgs: [ pkgs.file ];
     })
-    gamemode
     protonup-qt
     mangohud
     gamescope
   ];
 
-  programs.nix-ld = {
-    enable = true;
-    libraries = with pkgs; [
-      file
-    ];
-  };
-
   services.flatpak.packages = [
     "net.retrodeck.retrodeck"
   ];
+	programs.steam = {
+		enable = true;
+		remotePlay.openFirewall = true;
+		dedicatedServer.openFirewall = true;
+		localNetworkGameTransfers.openFirewall = true;
+		extraCompatPackages = with pkgs; [
+			proton-ge-bin
+		];
+	};
 })

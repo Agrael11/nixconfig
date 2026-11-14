@@ -36,7 +36,7 @@
 					inherit inputs; 
 				};
 				modules = [
-					./modules/61-sc0710-fix.nix
+					./modules/hardware/sc0710-fix.nix
 					./hardware-config-desktop.nix
 					./config.nix
 					./config-desktop.nix

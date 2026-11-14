@@ -23,18 +23,11 @@ let
     ]);
   };
 in {
-  # Graphical productivity applications.
+  # Graphical development applications and their declarative plugins.
 
   environment.systemPackages = with pkgs; [
-    libreoffice
-    davinci-resolve
-    blender
-    gimp
     vscodeWithExtensions
-    obs-studio
     unityhub
-    easyeffects
-    rnnoise-plugin
     (withDirenv jetbrains.rust-rover [ ])
     (withDirenv jetbrains.clion [ ])
     (withDirenv jetbrains.rider [ "avalonia-rider" ])

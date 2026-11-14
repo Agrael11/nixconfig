@@ -9,21 +9,35 @@
 	};
 
 	imports = [
-		./modules/10-users.nix
-		./modules/20-cli-tools.nix
-		./modules/21-gui-tools.nix
-		./modules/22-cli-games.nix
-		./modules/23-gui-games.nix
-		./modules/23-retroarch-fix.nix
-		./modules/24-cli-productivity.nix
-		./modules/25-gui-productivity.nix
-		./modules/26-isotools.nix
-		./modules/27-curseforge.nix
-		./modules/30-services.nix
-		./modules/31-samba.nix
-		./modules/32-firewall.nix
-		./modules/41-sddm-astronaut-theme.nix
-		./modules/60-overlays.nix
+		./modules/common/users.nix
+		./modules/common/system.nix
+		./modules/common/shell.nix
+		./modules/common/audio.nix
+		./modules/common/hardware-services.nix
+		./modules/common/runtime-libraries.nix
+		./modules/common/flatpak.nix
+		./modules/common/firewall.nix
+		./modules/cli/system-tools.nix
+		./modules/cli/graphics-diagnostics.nix
+		./modules/cli/text-editors.nix
+		./modules/cli/file-managers.nix
+		./modules/cli/network-tools.nix
+		./modules/cli/archives.nix
+		./modules/cli/storage-tools.nix
+		./modules/cli/games.nix
+		./modules/cli/media.nix
+		./modules/cli/browsers.nix
+		./modules/cli/productivity.nix
+		./modules/cli/nix-tools.nix
+		./modules/cli/isotools.nix
+		./modules/cli/services/ssh.nix
+		./modules/cli/services/samba.nix
+		./modules/cli/services/containers.nix
+		./modules/cli/services/virtualisation.nix
+		./modules/cli/services/zerotier.nix
+		./modules/cli/services/gamemode.nix
+		./modules/overrides/retroarch.nix
+		./modules/overrides/application-packages.nix
 	];
 
 	boot.loader.grub.enable = true;
@@ -39,10 +53,4 @@
     	Defaults timestamp_timeout=-1
   	'';
 
-	system.activationScripts.updateFlatpaks = {
-		text = ''
-			PATH=$PATH:${pkgs.flatpak}/bin
-			flatpak update --noninteractive || true
-		'';
-	};
 })

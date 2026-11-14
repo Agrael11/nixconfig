@@ -1,4 +1,30 @@
-({pkgs, pkgs-unstable, hres, vres, extraExport, ...}: {
+{ pkgs, ... }: {
+  imports = [
+    ./modules/gui/system-tools.nix
+    ./modules/gui/browsers.nix
+    ./modules/gui/text-editors.nix
+    ./modules/gui/file-transfer.nix
+    ./modules/gui/downloads.nix
+    ./modules/gui/communication.nix
+    ./modules/gui/media-players.nix
+    ./modules/gui/video-editors.nix
+    ./modules/gui/video-recording.nix
+    ./modules/gui/disc-tools.nix
+    ./modules/gui/image-editors.nix
+    ./modules/gui/3d-tools.nix
+    ./modules/gui/office.nix
+    ./modules/gui/audio.nix
+    ./modules/gui/compatibility.nix
+    ./modules/gui/development.nix
+    ./modules/gui/remote-access.nix
+    ./modules/gui/virtualisation.nix
+    ./modules/gui/games.nix
+    ./modules/gui/game-sessions.nix
+    ./modules/gui/curseforge.nix
+    ./modules/gui/sddm-astronaut-theme.nix
+    ./modules/gui/services/sunshine.nix
+    ./modules/gui/services/teamviewer.nix
+  ];
 
 	services.xserver.enable = true;
 	services.displayManager.sddm = {
@@ -21,103 +47,10 @@
 	services.xserver.xkb.layout = "sk";
 	services.xserver.xkb.variant = "";
 
-	# Graphical applications are organized in dedicated modules under modules/.
-
-	virtualisation.docker = {
-		enable = true;
-		enableOnBoot = true; 
-		#package = pkgs.docker_29
-	};
-
-	services.sunshine.package = pkgs.sunshine.override {
-		cudaSupport = true;
-		cudaPackages = pkgs.cudaPackages;
-	};
-
-	services.sunshine = {
-		enable = true;
-		autoStart = true;  # optional: starts Sunshine automatically on login
-		capSysAdmin = true;
-		openFirewall = true;
-	};
-
-	virtualisation.virtualbox.host.enable = true;
-	virtualisation.virtualbox.host.enableExtensionPack = true;
-	virtualisation.virtualbox.host.addNetworkInterface = true;
-	virtualisation.libvirtd.enable = true;
-	virtualisation.libvirtd.qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
-	programs.virt-manager.enable = true;
-	
-	users.extraGroups.vboxusers.members = [ "tachi" ];	
-	users.extraGroups.i2c.members = [ "tachi" ];
-
-	services.teamviewer.enable = true;
-
-	services.xserver.displayManager.session = [
-  	{
-		name = "Steam";
-		manage = "desktop";  # ← This is what Nix was missing
-		start = ''
-			${extraExport} exec ${pkgs.gamescope}/bin/gamescope \
-			--fullscreen \
-        	-W ${hres} -H ${vres} \
-			--steam \
-			-- \
-			steam -tenfoot
-		'';
-	}
-	{
-		name = "RetroDeck";
-		manage = "desktop";
-		start = ''
-			${extraExport} exec ${pkgs.gamescope}/bin/gamescope \
-			--fullscreen \
-			-W ${hres} -H ${vres} \
-			-- \
-			net.retrodeck.retrodeck
-		'';
-	}
-	{
-		name = "RetroArch";
-		manage = "desktop";
-		start = ''
-			${extraExport} exec ${pkgs.gamescope}/bin/gamescope \
-			--fullscreen \
-			-W ${hres} -H ${vres} \
-			-- \
-			retroarch
-		'';
-	}
-	{
-		name = "Kodi";
-		manage = "desktop";
-		start = ''
-			${extraExport} exec ${pkgs.gamescope}/bin/gamescope \
-			--fullscreen \
-			-W ${hres} -H ${vres} \
-			-- \
-			kodi
-		'';
-	}
-
-	];
-
 	environment.sessionVariables = {
-		PATH = [ "~/.local/bin/" ];
-		XDG_CONFIG_HOME = "$HOME/.config";
 		NIXOS_OZONE_WL = "1";
 		MANGOHUD = "1";
 		__NV_PRIME_RENDER_OFFLOAD = "1";
 		__GLX_VENDOR_LIBRARY_NAME = "nvidia";
 	};
-	
-	programs.steam = {
-		enable = true;
-		remotePlay.openFirewall = true;
-		dedicatedServer.openFirewall = true;
-		localNetworkGameTransfers.openFirewall = true;
-		extraCompatPackages = with pkgs; [
-			proton-ge-bin
-		];
-	};
-})
+}
