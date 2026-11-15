@@ -133,18 +133,18 @@ cmd_update() {
         exit 1
     fi
 
-    # Zostavenie extra argumentov pre nix
-    local extra_args=()
+    # nh --update launches a separate Nix command for flake input updates.
+    # Arguments after -- only reach the build, not that earlier update step.
+    # nh forwards NIX_CONFIG to both, keeping the token out of process arguments.
     if [[ -n "$GITHUB_TOKEN" ]]; then
-        extra_args+=("--option" "access-tokens" "github.com=$GITHUB_TOKEN")
+        export NIX_CONFIG="$(printf '%s\naccess-tokens = github.com=%s\n' "${NIX_CONFIG:-}" "$GITHUB_TOKEN")"
     fi
 
     echo "Running nh os $action (jobs: $MAX_JOBS, cores: $CORES)..."
     sudo -v
     nh os "$action" --update -- \
         --option max-jobs "$MAX_JOBS" \
-        --option cores "$CORES" \
-        "${extra_args[@]}"
+        --option cores "$CORES"
 
     case "$power_action" in
         reboot)
