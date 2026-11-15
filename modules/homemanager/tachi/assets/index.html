@@ -1,0 +1,101 @@
+<html>
+	<head>
+		<style>
+			.parent{
+				background-size: cover;
+				background-position: center;
+				background-repeat: no-repeat;
+				position: absolute;
+				inset: 0;
+			}
+			.img-sorey {
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: bottom left;
+			}
+			.sorey{
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				height: 97vh;
+    			width: 60vw;
+				-webkit-transition: all 0.3s linear;
+						transition: all 0.3s linear;
+				-webkit-transform: scale3d(1, 1, 1);
+						transform: scale3d(1, 1, 1);
+			}
+			.sorey:hover{
+				transform: scale3d(1.05, 1.05, 1);
+			}
+			.mikleo{
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				height: 92vh;
+    			width: 40vw;
+				-webkit-transition: all 0.3s linear;
+						transition: all 0.3s linear;
+				-webkit-transform: scale3d(1, 1, 1);
+						transform: scale3d(1, 1, 1);
+			}
+			.img-mikleo {
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: bottom right;
+			}
+			.mikleo:hover{
+				transform: scale3d(1.05, 1.05, 1);
+			}
+			.bgnight{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				inset: 0;
+				object-fit: cover;
+			}
+			.bgday{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				inset: 0;
+				object-fit: cover;
+					-webkit-transition: all 1s linear;
+							transition: all 1s linear;
+			}
+		</style>
+		<script src="https://unpkg.com/suncalc@1.9.0/suncalc.js"></script>
+		<script>
+			setTimeout(changeImage, 10);
+			function changeImage()
+			{
+			const times = SunCalc.getTimes(new Date(), 48.1486, 17.1077);
+				var now = new Date();
+				var element = document.getElementById("Day");
+				if ((now < times.sunrise || now > times.sunset) && element.style.opacity != "0")
+				{
+					element.style.opacity="0";
+				}
+				if ((now >= times.sunrise && now <= times.sunset) && element.style.opacity != "1")
+				{
+					element.style.opacity="1";
+				}
+				setTimeout(changeImage, 30000);
+			}
+		</script>
+		<title>Sorey & Mikleo Wallpaper</title>
+	</head>
+	<body style="overflow: hidden">
+		<div class="parent"/>
+			<img src="Background-Night.png" class="bgnight">
+			<img src="Background-Day.png" class="bgday" id="Day">
+			<div class="sorey">
+				<img src="Sorey.png" class="img-sorey"/>
+			</div>
+			<div class="mikleo">
+				<img src="Mikleo.png" class="img-mikleo"/>
+			</div>
+		</div>
+	</body>
+</html>

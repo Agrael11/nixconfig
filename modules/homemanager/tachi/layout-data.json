@@ -1,0 +1,283 @@
+{
+  "widgets": [
+    {
+      "role": "network",
+      "name": "org.kde.plasma.systemmonitor.net",
+      "config": {
+        "Appearance": {
+          "chartFace": "org.kde.ksysguard.linechart",
+          "title": "Rýchlosť siete"
+        },
+        "SensorColors": {
+          "network/all/download": "61,174,233",
+          "network/all/upload": "233,120,61"
+        },
+        "Sensors": {
+          "highPrioritySensorIds": "[\"network/all/download\",\"network/all/upload\"]"
+        },
+        "": {
+          "CurrentPreset": "org.kde.plasma.systemmonitor"
+        }
+      },
+      "position": {
+        "horizontal": 0,
+        "vertical": 0
+      },
+      "size": {
+        "width": 320,
+        "height": 240
+      }
+    },
+    {
+      "role": "disk",
+      "name": "org.kde.plasma.systemmonitor.diskactivity",
+      "config": {
+        "Appearance": {
+          "chartFace": "org.kde.ksysguard.linechart",
+          "title": "Aktivita pevného disku"
+        },
+        "SensorColors": {
+          "disk/all/read": "233,120,61",
+          "disk/all/write": "61,174,233"
+        },
+        "Sensors": {
+          "highPrioritySensorIds": "[\"disk/all/write\",\"disk/all/read\"]"
+        },
+        "": {
+          "CurrentPreset": "org.kde.plasma.systemmonitor"
+        }
+      },
+      "position": {
+        "horizontal": 0,
+        "vertical": 256
+      },
+      "size": {
+        "width": 320,
+        "height": 240
+      }
+    },
+    {
+      "role": "memory",
+      "name": "org.kde.plasma.systemmonitor.memory",
+      "config": {
+        "Appearance": {
+          "chartFace": "org.kde.ksysguard.linechart",
+          "title": "Využitie pamäte"
+        },
+        "SensorColors": {
+          "memory/physical/used": "61,174,233"
+        },
+        "Sensors": {
+          "highPrioritySensorIds": "[\"memory/physical/used\"]",
+          "lowPrioritySensorIds": "[\"memory/physical/total\"]",
+          "totalSensors": "[\"memory/physical/usedPercent\"]"
+        },
+        "org.kde.ksysguard.linechart/General": {
+          "showLegend": "false"
+        },
+        "": {
+          "CurrentPreset": "org.kde.plasma.systemmonitor"
+        }
+      },
+      "position": {
+        "horizontal": 0,
+        "vertical": 512
+      },
+      "size": {
+        "width": 320,
+        "height": 240
+      }
+    },
+    {
+      "role": "volume",
+      "name": "org.kde.plasma.volume",
+      "config": {
+        "": {},
+        "SensorColors": {}
+      },
+      "position": {
+        "horizontal": 0,
+        "vertical": 768
+      },
+      "size": {
+        "width": 320,
+        "height": 240
+      }
+    },
+    {
+      "role": "cpu",
+      "name": "org.kde.plasma.systemmonitor.cpu",
+      "config": {
+        "Appearance": {
+          "chartFace": "org.kde.ksysguard.piechart",
+          "title": "Celkové využitie CPU"
+        },
+        "SensorColors": {
+          "cpu/all/usage": "61,174,233",
+          "cpu/cpu\\d+/usage": "115,61,233"
+        },
+        "Sensors": {
+          "highPrioritySensorIds": "[\"cpu/cpu\\\\\\\\d+/usage\"]",
+          "lowPrioritySensorIds": "[\"cpu/all/cpuCount\",\"cpu/all/coreCount\"]",
+          "totalSensors": "[\"cpu/all/usage\"]"
+        },
+        "org.kde.ksysguard.piechart/General": {
+          "showLegend": "false"
+        },
+        "": {
+          "CurrentPreset": "org.kde.plasma.systemmonitor"
+        }
+      },
+      "position": {
+        "horizontal": 1648,
+        "vertical": 0
+      },
+      "size": {
+        "width": 272,
+        "height": 240
+      }
+    },
+    {
+      "role": "cpu-temperature",
+      "name": "org.kde.plasma.systemmonitor.cpu",
+      "config": {
+        "Appearance": {
+          "chartFace": "org.kde.ksysguard.linechart",
+          "title": "Teplota CPU"
+        },
+        "SensorColors": {
+          "cpu/all/averageTemperature": "233,231,61",
+          "cpu/all/usage": "61,174,233"
+        },
+        "Sensors": {
+          "highPrioritySensorIds": "[\"cpu/all/averageTemperature\"]",
+          "lowPrioritySensorIds": "[\"cpu/all/cpuCount\",\"cpu/all/coreCount\"]",
+          "totalSensors": "[\"cpu/all/usage\"]"
+        },
+        "org.kde.ksysguard.linechart/General": {
+          "showLegend": "false"
+        },
+        "": {
+          "CurrentPreset": "org.kde.plasma.systemmonitor"
+        }
+      },
+      "position": {
+        "horizontal": 1648,
+        "vertical": 256
+      },
+      "size": {
+        "width": 272,
+        "height": 240
+      }
+    },
+    {
+      "role": "gpu",
+      "name": "org.kde.plasma.systemmonitor.cpu",
+      "config": {
+        "Appearance": {
+          "chartFace": "org.kde.ksysguard.piechart",
+          "title": "Celkové využitie GPU"
+        },
+        "SensorColors": {
+          "cpu/all/usage": "61,174,233",
+          "gpu/all/usage": "233,61,215"
+        },
+        "Sensors": {
+          "highPrioritySensorIds": "[\"gpu/all/usage\"]",
+          "lowPrioritySensorIds": "[]",
+          "totalSensors": "[\"gpu/all/usage\"]"
+        },
+        "org.kde.ksysguard.piechart/General": {
+          "showLegend": "false"
+        },
+        "": {
+          "CurrentPreset": "org.kde.plasma.systemmonitor"
+        }
+      },
+      "position": {
+        "horizontal": 1648,
+        "vertical": 512
+      },
+      "size": {
+        "width": 272,
+        "height": 240
+      }
+    },
+    {
+      "role": "gpu-temperature",
+      "name": "org.kde.plasma.systemmonitor.cpu",
+      "config": {
+        "Appearance": {
+          "chartFace": "org.kde.ksysguard.linechart",
+          "title": "Teplota GPU"
+        },
+        "SensorColors": {
+          "cpu/all/usage": "61,174,233",
+          "gpu/gpu1/temperature": "233,61,101"
+        },
+        "Sensors": {
+          "highPrioritySensorIds": "[\"gpu/gpu1/temperature\"]",
+          "lowPrioritySensorIds": "[\"cpu/all/cpuCount\",\"cpu/all/coreCount\"]",
+          "totalSensors": "[\"cpu/all/usage\"]"
+        },
+        "": {
+          "CurrentPreset": "org.kde.plasma.systemmonitor"
+        }
+      },
+      "position": {
+        "horizontal": 1648,
+        "vertical": 768
+      },
+      "size": {
+        "width": 272,
+        "height": 240
+      }
+    }
+  ],
+  "weather": {
+    "altitude": "429",
+    "countryCode": "SK",
+    "latitude": "48.7276",
+    "librewxrArrows": "true",
+    "librewxrLayer": "both",
+    "librewxrTheme": "light",
+    "locationName": "Handlová, Trenčín Region, Slovakia",
+    "longitude": "18.76012",
+    "radarZoom": "7",
+    "roundValues": "false",
+    "savedLocations": "[{\"name\":\"Handlová, Trenčín Region, Slovakia\",\"lat\":48.7276,\"lon\":18.76012,\"altitude\":424,\"timezone\":\"Europe/Bratislava\",\"countryCode\":\"SK\",\"starred\":true}]",
+    "simpleFontAutoSz": "25",
+    "simpleIconAutoSz": "54",
+    "simplePanelDim": "38",
+    "simplePanelLargeDim": "54",
+    "timezone": "Europe/Bratislava"
+  },
+  "trayWeather": {
+    "Appearance": {
+      "showHumidityInTooltip": "false",
+      "showTemperatureInTooltip": "false",
+      "showWindInTooltip": "false"
+    },
+    "WeatherStation": {
+      "placeDisplayName": "Banská Bystrica, Slovakia, SK",
+      "placeInfo": "Banská Bystrica, Slovakia, SK|3061186",
+      "provider": "bbcukmet"
+    }
+  },
+  "desktopLaunchers": [
+    [
+      "applications:systemsettings.desktop",
+      "preferred://browser",
+      "preferred://filemanager",
+      "applications:com.obsproject.Studio.desktop",
+      "applications:toggle.desktop"
+    ],
+    [
+      "applications:systemsettings.desktop",
+      "preferred://filemanager",
+      "applications:com.obsproject.Studio.desktop",
+      "applications:toggle.desktop",
+      "preferred://browser"
+    ]
+  ]
+}

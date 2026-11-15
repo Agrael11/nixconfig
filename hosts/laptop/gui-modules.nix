@@ -1,5 +1,6 @@
 { ... }: {
   imports = [
+    ./home.nix
     ../../modules/overrides/retroarch.nix
     ../../modules/overrides/application-packages.nix
     ../../modules/gui/session.nix

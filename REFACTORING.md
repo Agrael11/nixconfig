@@ -164,6 +164,8 @@ modules/
 
 Phases 2–7 are implemented and validated locally. Phase 9 is accepted as complete after user-run offloading, unavailable-builder fallback, and recovery tests; remaining workload/concurrency checks are deferred to ordinary use. Phase 8 is not marked complete. The notes below record the checks and their limits; system activation remains a separate user decision. The intentionally untracked lock-file policy is unchanged. The ChatGPT web conversation and local VS Code Codex agent share this file as the planning reference.
 
+Phase 12 is implemented for review, with non-activating evaluation/build and isolated migration/KDE tests. It is **not runtime-accepted**: first-activation conflict review/backups on both hosts, Laptop's live audit and physical application/power/display checks remain pending. See [the Home Manager implementation and activation guide](modules/homemanager/README.md). Native PowerDevil retains a fixed 60-second critical-battery warning; literal immediate suspend remains unimplemented.
+
 ### Phase 2 implementation and validation (2026-11-14)
 
 - Enabled the NixOS `programs.direnv` module, Zsh integration, and nix-direnv in `modules/24-cli-productivity.nix`. Standard per-project `.envrc` approval remains required; no automatic trust was added.

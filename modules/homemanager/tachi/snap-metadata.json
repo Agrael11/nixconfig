@@ -1,0 +1,13 @@
+{
+  "KPlugin": {
+    "Id": "tachi-snap-cycle",
+    "Name": "Tachi half-screen snap cycle",
+    "Description": "Half-screen snapping, restore and continuation across active outputs",
+    "Version": "1.0",
+    "License": "MIT"
+  },
+  "KPackageStructure": "KWin/Script",
+  "X-Plasma-API": "javascript",
+  "X-Plasma-MainScript": "code/main.js",
+  "X-KDE-PluginInfo-EnabledByDefault": false
+}

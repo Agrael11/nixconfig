@@ -28,9 +28,9 @@ in {
   environment.systemPackages = with pkgs; [
     vscodeWithExtensions
     unityhub
-    (withDirenv jetbrains.rust-rover [ ])
-    (withDirenv jetbrains.clion [ ])
-    (withDirenv jetbrains.rider [ "avalonia-rider" ])
+    (withDirenv jetbrains.rust-rover [ "com.intellij.plugins.visualstudiokeymap" ])
+    (withDirenv jetbrains.clion [ "com.intellij.plugins.visualstudiokeymap" ])
+    (withDirenv jetbrains.rider [ "avalonia-rider" "com.intellij.plugins.visualstudiokeymap" ])
     (withDirenv jetbrains.idea [ ])
   ];
 })
