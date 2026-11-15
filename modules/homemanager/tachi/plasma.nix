@@ -106,6 +106,7 @@ in {
     # positions or existing monitor-switching scripts. Laptop is unaffected.
     startup.startupScript.tachi-primary-display = lib.mkIf (cfg.host == "desktop") {
       priority = 6;
+      runAlways = true;
       text = ''
         outputs=$(kscreen-doctor -o 2>/dev/null) || exit 0
         if printf '%s\n' "$outputs" | awk '
