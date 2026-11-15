@@ -102,6 +102,21 @@ in {
       });
       ${widgetLib.addDesktopWidgetStmts "desktopWidgets" config.programs.plasma.desktop.widgets}
     '';
+    # Desktop: retain DP-3 as primary without changing modes, scaling, output
+    # positions or existing monitor-switching scripts. Laptop is unaffected.
+    startup.startupScript.tachi-primary-display = lib.mkIf (cfg.host == "desktop") {
+      priority = 6;
+      text = ''
+        outputs=$(kscreen-doctor -o 2>/dev/null) || exit 0
+        if printf '%s\n' "$outputs" | awk '
+          /^Output:/ { target = ($3 == "DP-3"); next }
+          target && /^[[:space:]]*connected[[:space:]]*$/ { found = 1 }
+          END { exit !found }
+        '; then
+          kscreen-doctor output.DP-3.primary
+        fi
+      '';
+    };
     # items.configs currently has no effect in upstream's tray converter. Use
     # the supported ConfigFile API after the tray's async applet creation.
     startup.startupScript.tachi-tray-weather = {
