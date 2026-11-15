@@ -10,7 +10,10 @@ import json
 import os
 import pathlib
 import subprocess
-import tempfile
+from pathlib import Path
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tachi"))
+from maintenance import validation_directory
 import signal
 parser = argparse.ArgumentParser()
 parser.add_argument('manifest', type=pathlib.Path)
@@ -19,7 +22,7 @@ parser.add_argument('--host', choices=['Desktop', 'Laptop'], default='Desktop')
 args = parser.parse_args()
 source = pathlib.Path(__file__).resolve().parents[1] / 'tachi'
 outputs = 2 if args.host == 'Desktop' else 1
-r=pathlib.Path(tempfile.mkdtemp(prefix='hm-plasma-validation-'))
+r=validation_directory('plasma-')
 for n in ['home','runtime','config','data','cache','state']: (r/n).mkdir(mode=0o700)
 env=dict(os.environ)
 for n in ['DBUS_SESSION_BUS_ADDRESS','DISPLAY','WAYLAND_DISPLAY','QT_QPA_PLATFORM','XDG_SESSION_ID']: env.pop(n,None)

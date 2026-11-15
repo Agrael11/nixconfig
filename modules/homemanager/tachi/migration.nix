@@ -2,6 +2,11 @@
 let
   cfg = config.nixconfig;
   python = pkgs.python3;
+  tools = pkgs.runCommand "tachi-home-migration-tools" {} ''
+    mkdir -p "$out"
+    cp ${./merge.py} "$out/merge.py"
+    cp ${./maintenance.py} "$out/maintenance.py"
+  '';
   policy = pkgs.writeText "tachi-preferences.json" (builtins.toJSON {
     operations = cfg.mutable;
     jetbrains = cfg.jetbrains;
@@ -31,13 +36,25 @@ in {
     home.packages = [ (pkgs.writeShellScriptBin "tachi-home-audit" ''
       if [ "$#" -eq 0 ]; then set -- --check; fi
       export PATH="${lib.makeBinPath [ pkgs.git ]}:$PATH"
-      exec ${python}/bin/python ${./merge.py} --home "$HOME" --policy ${policy} "$@"
+      exec ${python}/bin/python ${tools}/merge.py --home "$HOME" --policy ${policy} "$@"
     '') ];
     # Back up before PM writes KConfig, not after. The merger plans every write
     # and rejects symlinks/malformed documents before changing any mutable file.
+    # Keep the FD open until the activation shell exits, including PM's writes.
+    # The merger inherits the same lock rather than deadlocking on a second one.
+    home.activation.tachiMaintenanceLock = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
+      if [[ -z "''${DRY_RUN_CMD:-}" ]]; then
+        tachiLockPath=$(${python}/bin/python ${tools}/maintenance.py --home "$HOME" --prepare-lock)
+        exec {tachiMaintenanceLockFd}>"$tachiLockPath"
+        ${pkgs.util-linux}/bin/flock -n "$tachiMaintenanceLockFd" || {
+          echo "Home Manager migration/rollback/cleanup is active; retry later." >&2
+          exit 1
+        }
+      fi
+    '';
     home.activation.tachiPreferences = lib.hm.dag.entryBetween [ "configure-plasma" ] [ "writeBoundary" ] ''
       export PATH="${lib.makeBinPath [ pkgs.git ]}:$PATH"
-      $DRY_RUN_CMD ${python}/bin/python ${./merge.py} --home "$HOME" --policy ${policy} --apply
+      $DRY_RUN_CMD ${python}/bin/python ${tools}/merge.py --home "$HOME" --policy ${policy} --apply --lock-fd "''${tachiMaintenanceLockFd:--1}"
     '';
     xdg.configFile."nixconfig/preferences-policy.json".source = policy;
   };

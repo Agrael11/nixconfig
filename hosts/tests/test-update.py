@@ -19,6 +19,10 @@ class UpdateTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         self.script = self.root / "update.sh"
         shutil.copy2(SCRIPT, self.script)
+        # Never call the real maintenance CLI: /tmp may contain real artifacts.
+        helper = self.root / "modules/homemanager/tachi/maintenance.py"
+        helper.parent.mkdir(parents=True)
+        helper.write_text('import os, subprocess, sys\nassert sys.argv[1:] == ["--home", os.environ["HOME"], "--system-clean"]\nprint("Mock Home Manager maintenance")\nstatus = subprocess.run(["nh", "clean", "all"]).returncode\nsys.exit(status or int(os.environ.get("UPDATE_TEST_HOME_CLEAN_EXIT", "0")))\n')
         self.config = self.root / ".lightswitch.conf"
         self.config.write_text('MAX_JOBS=2\nCORES=4\nGITHUB_TOKEN=""\n')
         self.log = self.root / "calls.jsonl"
@@ -53,6 +57,7 @@ if name == "nh":
             text=True, input=input_text, capture_output=True,
         )
         self.assertEqual(result.returncode, code, result.stderr + result.stdout)
+        self.last_result = result
         calls = [json.loads(line) for line in self.log.read_text().splitlines()]
         self.assertEqual(calls[-1], ["sudo", "-k"])
         return calls
@@ -99,6 +104,7 @@ if name == "nh":
     def test_clean_and_all(self):
         calls = self.run_update(["clean"])
         self.assertEqual(calls, [["sudo", "-v"], ["nh", "clean", "all"], ["sudo", "-k"]])
+        self.assertIn("Mock Home Manager maintenance", self.last_result.stdout)
         calls = self.run_update(["all", "boot", "-j", "1", "-c", "2"])
         self.assertEqual([c[:3] for c in calls if c[0] == "nh"],
                          [["nh", "clean", "all"], ["nh", "os", "boot"]])
@@ -112,6 +118,11 @@ if name == "nh":
                                  [["sudo", "-v"], ["sudo", "-k"]])
                 if args == ["all"]:
                     self.assertFalse(any(c[:2] == ["nh", "os"] for c in calls))
+
+    def test_home_cleanup_failure_stops_all_before_update_and_power(self):
+        self.env["UPDATE_TEST_HOME_CLEAN_EXIT"] = "19"
+        calls = self.run_update(["all", "--sleep"], code=19)
+        self.assertEqual(calls, [["sudo", "-v"], ["nh", "clean", "all"], ["sudo", "-k"]])
 
     def test_setup_and_symlink(self):
         self.config.unlink()

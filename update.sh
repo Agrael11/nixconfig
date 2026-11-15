@@ -68,7 +68,7 @@ EOF
 cmd_clean() {
     echo "Cleaning up system..."
     sudo -v
-    nh clean all
+    python3 "$SCRIPT_DIR/modules/homemanager/tachi/maintenance.py" --home "$HOME" --system-clean
 }
 
 # Hlavná logika pre update / switch / boot / reboot
@@ -169,7 +169,7 @@ Usage: $(basename "$0") [command] [options]
 Commands:
   (none / update)    Run system update/switch (default, auto-runs setup if missing)
   setup              Configure tokens, jobs, cores and create 'nixupdate' symlink
-  clean              Run 'nh clean all'
+  clean              Run 'nh clean all' and remove local Home Manager backups/test leftovers
   all                Run 'clean' followed by 'update'
 
 Update Options:

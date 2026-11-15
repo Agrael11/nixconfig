@@ -2,9 +2,11 @@ import importlib.util
 import json
 from pathlib import Path
 import tempfile
+import sys
 import unittest
 
 SOURCE = Path(__file__).resolve().parents[1] / "tachi"
+sys.path.insert(0, str(SOURCE))
 spec = importlib.util.spec_from_file_location("merge", SOURCE / "merge.py")
 m = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(m)

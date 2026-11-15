@@ -9,7 +9,7 @@ import shutil
 import shlex
 import stat
 import subprocess
-import tempfile
+from maintenance import operation_lock, staging_file
 import xml.etree.ElementTree as ET
 
 REMOTE_SUNCALC = b"https://unpkg.com/suncalc@1.9.0/suncalc.js"
@@ -276,15 +276,11 @@ def apply_plan(home, policy, writes, apply=True):
         path = home / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         mode = stat.S_IMODE(path.stat().st_mode) if path.exists() else 0o600
-        descriptor, tmp = tempfile.mkstemp(dir=path.parent, prefix=".nixconfig-")
-        try:
-            with os.fdopen(descriptor, "wb") as stream:
-                stream.write(data)
+        with staging_file(home, path.parent, ".nixconfig-") as (stream, tmp):
+            stream.write(data)
+            stream.flush()
             os.chmod(tmp, mode)
             os.replace(tmp, path)
-        finally:
-            if os.path.exists(tmp):
-                os.unlink(tmp)
     print(f"Preference backup: {backup}; changed {len(writes)} mutable files")
 
 
@@ -326,11 +322,11 @@ def restore_backup(home, backup, apply=False):
                 path.unlink()
             path.symlink_to(metadata["link"])
         else:
-            descriptor, tmp = tempfile.mkstemp(dir=path.parent, prefix=".nixconfig-restore-")
-            with os.fdopen(descriptor, "wb") as stream:
+            with staging_file(home, path.parent, ".nixconfig-restore-") as (stream, tmp):
                 stream.write((backup / relative).read_bytes())
-            os.chmod(tmp, metadata["mode"])
-            os.replace(tmp, path)
+                stream.flush()
+                os.chmod(tmp, metadata["mode"])
+                os.replace(tmp, path)
     print(f"Restored {backup}; pre-rollback values saved in {safety}")
 
 
@@ -344,27 +340,29 @@ def main():
     modes.add_argument("--backup", action="store_true")
     modes.add_argument("--restore", type=Path)
     parser.add_argument("--apply-restore", action="store_true")
+    parser.add_argument("--lock-fd", type=int, help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.apply_restore and args.restore is None:
         parser.error("--apply-restore requires --restore BACKUP")
-    if args.restore is not None:
-        restore_backup(args.home, args.restore, apply=args.apply_restore)
-        return
-    policy = json.loads(args.policy.read_text())
-    writes = build_plan(args.home, policy)
-    if args.apply:
-        apply_plan(args.home, policy, writes)
-    elif args.backup:
-        apply_plan(args.home, policy, writes, apply=False)
-    else:
-        print("Home Manager link targets already present (review before activation):")
-        for relative in policy.get("managedLinks", []):
-            path = args.home / relative
-            if path.exists() or path.is_symlink():
-                print(relative + (" [symlink]" if path.is_symlink() else " [file/directory]"))
-        print("Planned mutable updates (no files changed):")
-        for relative in sorted(writes):
-            print(relative)
+    with operation_lock(args.home, inherited_fd=args.lock_fd):
+        if args.restore is not None:
+            restore_backup(args.home, args.restore, apply=args.apply_restore)
+            return
+        policy = json.loads(args.policy.read_text())
+        writes = build_plan(args.home, policy)
+        if args.apply:
+            apply_plan(args.home, policy, writes)
+        elif args.backup:
+            apply_plan(args.home, policy, writes, apply=False)
+        else:
+            print("Home Manager link targets already present (review before activation):")
+            for relative in policy.get("managedLinks", []):
+                path = args.home / relative
+                if path.exists() or path.is_symlink():
+                    print(relative + (" [symlink]" if path.is_symlink() else " [file/directory]"))
+            print("Planned mutable updates (no files changed):")
+            for relative in sorted(writes):
+                print(relative)
 
 
 if __name__ == "__main__":

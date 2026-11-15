@@ -2,7 +2,8 @@
 from pathlib import Path
 import subprocess
 import sys
-import tempfile
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tachi"))
+from maintenance import validation_directory
 
 source = Path(__file__).resolve().parents[1] / "tachi"
 harness = r'''
@@ -76,8 +77,8 @@ assert(target.children.Configuration.children.WeatherStation.entries.provider ==
 assert(!tree.children.Containments.children.unrelated.children, 'unrelated widget untouched');
 print('Tray weather fixture: PASS');
 '''
-with tempfile.TemporaryDirectory(prefix="hm-js-test-") as directory:
-    script = Path(directory) / "test.js"
-    script.write_text(harness + (source / "snap-cycle.js").read_text() + tests
-                     + tray_harness + (source / "tray-weather.js").read_text() + tray_tests)
-    subprocess.run([sys.argv[1], str(script)], check=True)
+directory = validation_directory("js-")
+script = Path(directory) / "test.js"
+script.write_text(harness + (source / "snap-cycle.js").read_text() + tests
+                 + tray_harness + (source / "tray-weather.js").read_text() + tray_tests)
+subprocess.run([sys.argv[1], str(script)], check=True)

@@ -166,6 +166,8 @@ Phases 2–7 are implemented and validated locally. Phase 9 is accepted as compl
 
 Phase 12 is implemented for review, with non-activating evaluation/build and isolated migration/KDE tests. It is **not runtime-accepted**: first-activation conflict review/backups on both hosts, Laptop's live audit and physical application/power/display checks remain pending. See [the Home Manager implementation and activation guide](modules/homemanager/README.md). Native PowerDevil retains a fixed 60-second critical-battery warning; literal immediate suspend remains unimplemented.
 
+Before Phase 12 activation, `update.sh` cleanup was extended to retain `nh clean all` and remove this user's local migration backups and positively identified validation/staging artifacts. A shared lock coordinates cleanup, activation, backups, rollback and retained validation tools. All backup categories are intentionally removed by `clean`/`all`; unrecognized temporary files are preserved. See the guide's unified-cleanup section for exact paths and limitations. The follow-up has non-activating host evaluations and isolated tests only; no real cleanup, rebuild, switch or existing-artifact deletion was performed.
+
 ### Phase 2 implementation and validation (2026-11-14)
 
 - Enabled the NixOS `programs.direnv` module, Zsh integration, and nix-direnv in `modules/24-cli-productivity.nix`. Standard per-project `.envrc` approval remains required; no automatic trust was added.

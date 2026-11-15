@@ -6,13 +6,15 @@ from pathlib import Path
 import re
 import signal
 import subprocess
-import tempfile
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "tachi"))
+from maintenance import validation_directory
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--qml', type=Path, required=True)
 parser.add_argument('--direction', choices=['left', 'right'], default='right')
 args = parser.parse_args()
-root = Path(tempfile.mkdtemp(prefix='hm-kwin-validation-'))
+root = validation_directory('kwin-')
 for name in ['home', 'runtime', 'config', 'data', 'cache', 'state']:
     (root / name).mkdir(mode=0o700)
 env = dict(os.environ)
