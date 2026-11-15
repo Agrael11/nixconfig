@@ -72,6 +72,23 @@ class MergeTests(unittest.TestCase):
                 m.build_plan(home, policy)
             self.assertEqual(outside.read_text(), 'untouched')
 
+    def test_autostart_symlinks_do_not_block_repeat_activation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            home = Path(directory)
+            autostart = home / '.config/autostart'
+            autostart.mkdir(parents=True)
+            outside = home / 'unmanaged-launcher.desktop'
+            outside.write_text('[Desktop Entry]\\nExec=steam %U\\n')
+            link = autostart / 'plasma-manager-autostart.desktop'
+            link.symlink_to(outside)
+            (autostart / 'old-steam.desktop').write_text('[Desktop Entry]\\nExec=steam %U\\n')
+            policy = {'operations': [], 'jetbrains': {}, 'wallpaper': str(SOURCE / 'assets')}
+            writes = m.build_plan(home, policy)
+            self.assertNotIn('.config/autostart/plasma-manager-autostart.desktop', writes)
+            self.assertIn('Hidden=true', writes['.config/autostart/old-steam.desktop'].decode())
+            self.assertTrue(link.is_symlink())
+            self.assertNotIn('Hidden=', outside.read_text())
+
     def test_apply_backup_artwork_and_unmanaged_files(self):
         with tempfile.TemporaryDirectory() as directory:
             home = Path(directory)
