@@ -212,7 +212,10 @@ def build_plan(home, policy):
 
     # Disable duplicate stale launchers without deleting their other metadata.
     for path in (home / ".config/autostart").glob("*.desktop"):
-        if path.name in ("steam.desktop", "discord.desktop", "lunarclient.desktop"):
+        # Plasma Manager and other applications can own autostart symlinks.
+        # Never follow or modify them during opportunistic duplicate detection.
+        # Explicitly managed paths still go through read() and remain protected.
+        if path.is_symlink() or path.name in ("steam.desktop", "discord.desktop", "lunarclient.desktop"):
             continue
         relative = str(path.relative_to(home))
         text = read(relative).decode()
