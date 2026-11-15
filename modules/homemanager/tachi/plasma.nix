@@ -4,13 +4,29 @@ let
   data = builtins.fromJSON (builtins.readFile ./layout-data.json);
   widgetLib = import "${inputs.plasma-manager}/modules/widgets/lib.nix" { inherit lib; };
   sensors = suffix: builtins.toJSON (map (gpu: "${gpu}/${suffix}") cfg.gpuSensors);
-  adapt = w: {
+  # Captured from the Desktop Plasma containment after manually arranging the
+  # eight widgets at the 1920x1080 logical resolution (200% display scaling).
+  # Keep the shared layout-data.json positions unchanged for Laptop.
+  desktopWidgetPositions = {
+    network = { horizontal = 0; vertical = 0; };
+    disk = { horizontal = 0; vertical = 240; };
+    memory = { horizontal = 0; vertical = 480; };
+    volume = { horizontal = 0; vertical = 720; };
+    cpu = { horizontal = 1648; vertical = 0; };
+    gpu-temperature = { horizontal = 1648; vertical = 240; };
+    gpu = { horizontal = 1648; vertical = 480; };
+    cpu-temperature = { horizontal = 1648; vertical = 720; };
+  };
+  adapt = w: let
+    targetPosition = if cfg.host == "desktop"
+      then desktopWidgetPositions.${w.role} else w.position;
+  in {
     inherit (w) name size;
     # libplasma 6.6.6 treats (0, 0) as "no geometry hint" and centers the
     # widget, ignoring its size too. One pixel rounds to the same origin cell
     # while making the supported addWidget geometry hint unambiguous.
-    position = w.position // lib.optionalAttrs
-      (w.position.horizontal == 0 && w.position.vertical == 0) { horizontal = 1; };
+    position = targetPosition // lib.optionalAttrs
+      (targetPosition.horizontal == 0 && targetPosition.vertical == 0) { horizontal = 1; };
     screen = cfg.monitorScreen;
     config = (lib.removeAttrs w.config [ "" ]) // w.config."" // {
       SensorLabels = lib.optionalAttrs (w.role == "gpu" || w.role == "gpu-temperature") (
