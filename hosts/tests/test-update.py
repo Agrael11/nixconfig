@@ -35,6 +35,10 @@ name = Path(sys.argv[0]).name
 with open(os.environ["UPDATE_TEST_LOG"], "a") as f:
     f.write(json.dumps([name, *sys.argv[1:]]) + "\\n")
 if name == "nh":
+    expected_token = os.environ.get("UPDATE_TEST_EXPECT_TOKEN")
+    if expected_token and sys.argv[1:2] == ["os"]:
+        assert f"access-tokens = github.com={expected_token}" in os.environ.get("NIX_CONFIG", "")
+        assert expected_token not in " ".join(sys.argv), "Token leaked into nh arguments"
     sys.exit(int(os.environ.get("UPDATE_TEST_NH_EXIT", "0")))
 '''
         for name in ("nh", "sudo"):
@@ -86,14 +90,14 @@ if name == "nh":
 
     def test_cli_and_config_overrides(self):
         self.config.write_text('MAX_JOBS=3\nCORES=5\nGITHUB_TOKEN="test-placeholder"\n')
+        self.env["UPDATE_TEST_EXPECT_TOKEN"] = "test-placeholder"
         for flags in ([], ["-j", "1", "-c", "2"],
                       ["--jobs", "1", "--cores", "2"]):
             with self.subTest(flags=flags):
                 calls = self.run_update(["update", *flags])
                 jobs, cores = ("1", "2") if flags else ("3", "5")
                 self.assertIn(["nh", "os", "switch", "--update", "--",
-                               "--option", "max-jobs", jobs, "--option", "cores", cores,
-                               "--option", "access-tokens", "github.com=test-placeholder"], calls)
+                               "--option", "max-jobs", jobs, "--option", "cores", cores], calls)
 
     def test_invalid_arguments(self):
         for args in (["-j"], ["-c"], ["--jobs", "0"], ["--cores", "-1"],
