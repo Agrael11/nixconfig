@@ -13,9 +13,9 @@ let
     memory = { horizontal = 0; vertical = 480; };
     volume = { horizontal = 0; vertical = 720; };
     cpu = { horizontal = 1648; vertical = 0; };
-    gpu-temperature = { horizontal = 1648; vertical = 240; };
+    gpu-temperature = { horizontal = 1648; vertical = 720; };
     gpu = { horizontal = 1648; vertical = 480; };
-    cpu-temperature = { horizontal = 1648; vertical = 720; };
+    cpu-temperature = { horizontal = 1648; vertical = 240; };
   };
   adapt = w: let
     targetPosition = if cfg.host == "desktop"
