@@ -88,6 +88,15 @@ if name == "nh":
                 self.assertEqual(calls, [["sudo", "-v"], expected]
                                  + ([power] if power else []) + [["sudo", "-k"]])
 
+    def test_impure_is_forwarded_to_nh(self):
+        for args, action in ((["--impure"], "switch"),
+                             (["update", "boot", "--impure"], "boot"),
+                             (["all", "--impure"], "switch")):
+            with self.subTest(args=args):
+                self.assertIn(["nh", "os", action, "--update", "--impure", "--",
+                               "--option", "max-jobs", "2", "--option", "cores", "4"],
+                              self.run_update(args))
+
     def test_cli_and_config_overrides(self):
         self.config.write_text('MAX_JOBS=3\nCORES=5\nGITHUB_TOKEN="test-placeholder"\n')
         self.env["UPDATE_TEST_EXPECT_TOKEN"] = "test-placeholder"

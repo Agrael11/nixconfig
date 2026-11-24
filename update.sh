@@ -76,6 +76,7 @@ cmd_update() {
     local action="switch"
     local explicit_action=""
     local power_action=""
+    local -a nh_args=(--update)
 
     # Ak nie je spravený setup, pustíme ho automaticky
     if [[ ! -f "$CONFIG_FILE" ]]; then
@@ -102,6 +103,10 @@ cmd_update() {
                 ;;
             --sleep)
                 power_action="suspend"
+                shift
+                ;;
+            --impure)
+                nh_args=(--update --impure)
                 shift
                 ;;
             -j|--jobs)
@@ -142,7 +147,7 @@ cmd_update() {
 
     echo "Running nh os $action (jobs: $MAX_JOBS, cores: $CORES)..."
     sudo -v
-    nh os "$action" --update -- \
+    nh os "$action" "${nh_args[@]}" -- \
         --option max-jobs "$MAX_JOBS" \
         --option cores "$CORES"
 
@@ -180,6 +185,7 @@ Update Options:
                      If multiple power actions are given, the last one wins
   -j, --jobs NUM     Override max jobs
   -c, --cores NUM    Override cores per job
+  --impure           Allow impure builds
   -h, --help         Show this help message
 EOF
 }
@@ -209,7 +215,7 @@ case "$1" in
     -h|--help)
         usage
         ;;
-    boot|switch|reboot|--reboot|--shutdown|--sleep|-j|--jobs|-c|--cores)
+    boot|switch|reboot|--reboot|--shutdown|--sleep|--impure|-j|--jobs|-c|--cores)
         cmd_update "$@"
         ;;
     *)
