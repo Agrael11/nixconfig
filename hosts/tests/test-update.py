@@ -35,6 +35,8 @@ name = Path(sys.argv[0]).name
 with open(os.environ["UPDATE_TEST_LOG"], "a") as f:
     f.write(json.dumps([name, *sys.argv[1:]]) + "\\n")
 if name == "nh":
+    expected_insecure = "1" if "--impure" in sys.argv else None
+    assert os.environ.get("NIXPKGS_ALLOW_INSECURE") == expected_insecure
     expected_token = os.environ.get("UPDATE_TEST_EXPECT_TOKEN")
     if expected_token and sys.argv[1:2] == ["os"]:
         assert f"access-tokens = github.com={expected_token}" in os.environ.get("NIX_CONFIG", "")
@@ -46,6 +48,7 @@ if name == "nh":
             binary.write_text(mock)
             binary.chmod(0o755)
         self.env = dict(os.environ)
+        self.env.pop("NIXPKGS_ALLOW_INSECURE", None)
         self.env.update(
             PATH=str(binaries) + os.pathsep + os.environ["PATH"],
             HOME=str(self.root / "home"),

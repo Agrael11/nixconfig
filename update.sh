@@ -107,6 +107,7 @@ cmd_update() {
                 ;;
             --impure)
                 nh_args=(--update --impure)
+                export NIXPKGS_ALLOW_INSECURE=1
                 shift
                 ;;
             -j|--jobs)
@@ -185,7 +186,7 @@ Update Options:
                      If multiple power actions are given, the last one wins
   -j, --jobs NUM     Override max jobs
   -c, --cores NUM    Override cores per job
-  --impure           Allow impure builds
+  --impure           Use impure evaluation and allow insecure packages
   -h, --help         Show this help message
 EOF
 }
