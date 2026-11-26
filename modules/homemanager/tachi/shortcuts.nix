@@ -30,6 +30,8 @@ in {
         "Tachi Snap Left" = "Meta+Left";
         "Tachi Snap Right" = "Meta+Right";
       };
+      "services/io.missioncenter.MissionCenter.desktop"._launch = "Ctrl+Shift+Esc";
+      "services/org.kde.plasma-systemmonitor.desktop"._launch = "Meta+Esc";
       "services/org.kde.spectacle.desktop" = {
         ActiveWindowScreenShot = "Alt+Print";
         CurrentMonitorScreenShot = "Print";

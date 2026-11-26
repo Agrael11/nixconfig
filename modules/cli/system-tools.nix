@@ -8,6 +8,7 @@
     file
     android-tools
     htop
+    btop
     tmux
     binutils
     grub2
